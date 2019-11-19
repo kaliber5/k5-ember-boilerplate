@@ -1,0 +1,45 @@
+image: colthreepv/node-chrome:10
+
+definitions:
+  steps:
+    - step: &deploy
+        trigger: manual
+        script:
+          - yarn
+          - DOTENV=prod yarn build --prod
+          - pipe: atlassian/scp-deploy:0.3.3
+            variables:
+              USER: $DEPLOY_USER
+              SERVER: $DEPLOY_HOST
+              REMOTE_PATH: $DEPLOY_PATH
+              LOCAL_PATH: 'dist/*'
+
+pipelines:
+  default:
+    - step:
+        name: Tests
+        caches:
+          - node
+        script:
+          - yarn
+          - yarn lint
+          - yarn test:ci
+    - step:
+        name: Deploy to staging
+        deployment: staging
+        <<: *deploy
+    - step:
+        name: Deploy to production
+        deployment: production   # can be test, staging or production.
+        <<: *deploy
+  custom:
+    deploy-DEPLOYMENTNAME:
+      - step:
+          name: Deploy DEPLOYMENTNAME staging
+          deployment: DEPLOYMENTNAME-staging
+          trigger: automatic
+          <<: *deploy
+      - step:
+          name: Deploy DEPLOYMENTNAME production
+          deployment: DEPLOYMENTNAME-production
+          <<: *deploy
