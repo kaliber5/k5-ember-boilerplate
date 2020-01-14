@@ -1,6 +1,7 @@
 import ENV from '../../config/environment';
 import { skip } from 'qunit';
-import resetState from './setup-reset-app';
+import setupResetState from './setup-reset-app';
+import setupFlashMessages from './setup-flash-messages';
 import { setupApplicationTest, setupRenderingTest, setupTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import setupWaitFor from './setup-wait-for';
@@ -52,7 +53,8 @@ function setupYaddaTest(annotations) {
   if (annotations.setupapplicationtest) {
     return function setupApplicationTestCustom(hooks) {
       setupApplicationTest(hooks);
-      resetState(hooks);
+      setupResetState(hooks);
+      setupFlashMessages(hooks);
       setupWaitFor(hooks);
       setupMirage(hooks);
       setupYaddaOpinionated(hooks);

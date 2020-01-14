@@ -4,8 +4,8 @@ module.exports = function(environment) {
   const ENV = {
     environment,
 
-    modulePrefix: '<%= dasherizedPackageName %',
-    podModulePrefix: '<%= dasherizedPackageName %/pods',
+    modulePrefix: '<%= dasherizedPackageName %>',
+    podModulePrefix: '<%= dasherizedPackageName %>/pods',
     rootURL: '/',
     locationType: 'auto',
     apiNamespace: process.env.EMBER_API_NAMESPACE || '',
