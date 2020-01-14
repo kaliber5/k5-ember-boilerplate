@@ -41,6 +41,8 @@ module.exports = {
     });
 
     await this.addPackagesToProject([
+      {name: '@types/chai'},
+      {name: '@types/chai-as-promised'},
       {name: '@types/ember'},
       {name: '@types/ember-data'},
       {name: '@types/ember-qunit'},
