@@ -43,6 +43,7 @@ module.exports = {
     await this.addPackagesToProject([
       {name: '@types/chai'},
       {name: '@types/chai-as-promised'},
+      {name: '@types/chai-dom'},
       {name: '@types/ember'},
       {name: '@types/ember-data'},
       {name: '@types/ember-qunit'},
@@ -55,9 +56,13 @@ module.exports = {
       {name: '@types/qunit-dom'},
       {name: '@types/rsvp'},
       {name: '@types/sinon'},
+      {name: '@types/sinon-chai'},
       {name: '@typescript-eslint/eslint-plugin'},
       {name: '@typescript-eslint/parser'},
       {name: 'bootstrap'},
+      {name: 'chai'},
+      {name: 'chai-as-promised'},
+      {name: 'chai-domFc'},
       {name: 'cross-env'},
       {name: 'eslint-config-prettier'},
       {name: 'eslint-config-standard'},
@@ -74,6 +79,7 @@ module.exports = {
       {name: 'prettier'},
       {name: 'sass'},
       {name: 'sinon'},
+      {name: 'sinon-chai'},
       {name: 'typescript'},
       {name: 'yadda'},
     ]);
@@ -84,6 +90,7 @@ module.exports = {
 
 
     await this._modifyPackageJson();
+    await this._modifyRouter();
   },
 
   // https://github.com/typed-ember/ember-cli-typescript/blob/v3.1.2/ts/blueprints/ember-cli-typescript/index.js#L188-L216
@@ -128,7 +135,7 @@ module.exports = {
     });
 
     this.ui.writeLine('Added not-found route to app/router.js');
-}
+  }
 
 
 };
