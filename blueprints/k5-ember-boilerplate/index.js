@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs');
+
 module.exports = {
   description: 'A boilerplate for Ember apps, tailored for use in kaliber5',
 
@@ -15,7 +17,9 @@ module.exports = {
   async afterInstall(/* options */) {
     await this.addAddonsToProject({
       packages: [
+        {name: 'ember-bootstrap'},
         {name: 'ember-cli-dotenv'},
+        {name: 'ember-cli-flash'},
         {name: 'ember-cli-mirage'},
         {name: 'ember-cli-sass'},
         {name: 'ember-cli-typescript'},
@@ -75,5 +79,54 @@ module.exports = {
     await this.removePackagesFromProject([
       {name: 'ember-welcome-page'},
     ]);
-  }
+
+
+    await this._modifyPackageJson();
+  },
+
+  // https://github.com/typed-ember/ember-cli-typescript/blob/v3.1.2/ts/blueprints/ember-cli-typescript/index.js#L188-L216
+  _modifyPackageJson() {
+    const pkgPath = `${this.project.root}/package.json`;
+
+    let pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+
+    pkg.volta = {
+      node: '12.14.1',
+      yarn: '1.21.1',
+    };
+
+    pkg.scripts['lint:hbs'] = 'ember-template-lint .';
+    pkg.scripts['lint:ts'] = 'tsc --noEmit';
+    pkg.scripts['lint:eslint'] = 'eslint . --ext .js,.ts';
+    pkg.scripts['lint:js'] = 'yarn lint:ts && yarn lint:eslint';
+    pkg.scripts['lint'] = 'yarn lint:js && yarn lint:hbs';
+    pkg.scripts['lint-staged'] = 'lint-staged';
+    pkg.scripts['start'] = 'ember serve';
+    pkg.scripts['test'] = 'ember test';
+    pkg.scripts['test:ci'] = 'mkdir -p test-results && ember test > test-results/ember.xml --silent -r xunit';
+    pkg.scripts['dev-prod'] = 'cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-prod.kaliber5.de';
+    pkg.scripts['dev-staging'] = 'cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-staging.kaliber5.d';
+
+    pkg.husky = {
+      hooks: {
+        'pre-commit': 'lint-staged',
+      },
+    };
+
+    fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+    this.ui.writeLine('Modified package.json');
+  },
+
+
+  async _modifyRouter() {
+    const route = "  this.route('not-found', { path: '/*wildcard' });";
+
+    await this.insertIntoFile('app/router.js', route, {
+      after: 'Router.map(function() {\n'
+    });
+
+    this.ui.writeLine('Added not-found route to app/router.js');
+}
+
+
 };

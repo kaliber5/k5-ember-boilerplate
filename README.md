@@ -17,7 +17,7 @@ Usage
 
 ```
 npm cache clean --force
-npx ember-cli new <app-name> -b @ember/octane-app-blueprint --yarn
+npx ember-cli new <app-name> --yarn
 ```
 
 2. Install the addon:
@@ -58,7 +58,6 @@ Things not covered by this addon
     ```js
     "scripts": {
       "build": "ember build",
-      "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
       "lint:hbs": "ember-template-lint .",
       "lint:ts": "tsc --noEmit",
       "lint:eslint": "eslint . --ext .js,.ts",
