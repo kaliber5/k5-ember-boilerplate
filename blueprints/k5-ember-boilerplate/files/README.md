@@ -1,4 +1,4 @@
-# Water Bed Configurator
+# <%= dasherizedPackageName %>
 
 ## Env Vars
 
@@ -77,23 +77,6 @@ Unfortunately, `ember-cli-dotenv` does not support loading more than one dotenv 
 
 
 
-## Themes
-
-* `default` — default
-* `hofmeister`
-
-Using a theme other than `default` enables the POS mode.
-
-
-
-## POS mode
-
-When enabled, applies the following adjustments:
-
-* Removes the third breadcrumb item "Request Advice" in the configurator.
-
-
-
 ## CI commands
 
 * `yarn lint:ts` — checks the codebase for TypeScript issues.
@@ -102,8 +85,8 @@ When enabled, applies the following adjustments:
 * `yarn lint:js` — runs `lint:ts` and `lint:eslint`.
 * `yarn lint` — runs `lint:ts`, `lint:eslint` and `lint:hbs`.
 * `yarn lint-staged` — runs `lint:eslint` and `lint:hbs` on git-staged files only, runs `lint:ts` on the whole codebase.
-* `yarn dev-prod` — runs `ember s` against the production server in development mode.
-* `yarn dev-staging` — runs `ember s` against the staging server in development mode.
+* `yarn dev-prod` — runs `ember s` against the production server in development mode. ⚠ Must be configured in `package.json`.
+* `yarn dev-staging` — runs `ember s` against the staging server in development mode. ⚠ Must be configured in `package.json`.
 
 
 

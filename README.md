@@ -14,24 +14,31 @@ Usage
 
 1. Create a new Ember app:
 
+    ```
+    npm cache clean --force
+    npx ember-cli new <app-name> --yarn
+    ```
 
-```
-npm cache clean --force
-npx ember-cli new <app-name> -b @ember/octane-app-blueprint --yarn
-```
+2. Configure our private npm registry.
 
-2. Install the addon:
+    Put this into `.yarnrc`:
 
-```
-cd <app-name>
-ember i @kaliber5/k5-ember-blueprint
-```
+    ```
+    "@kaliber5:registry" "https://npm.kaliber5.de"
+    ```
 
-1. The addon will apply code changes, producing a number of conflicts. Resolve them one by one by answering Yes in the terminal, **until it starts installing dependencies**. Keep an eye for that.
+3. Install the addon:
 
-2. As it's installing dependencies, it will apply code changes from blueprints of installed addons. **Reject them one by one**.
+    ```
+    cd <app-name>
+    ember i @kaliber5/k5-ember-blueprint
+    ```
 
-3. Commit changes.
+4. The addon will apply code changes, producing a number of conflicts. Resolve them one by one by answering Yes in the terminal, **until it starts installing dependencies**. Keep an eye for that.
+
+5. As it's installing dependencies, it will apply code changes from blueprints of installed addons. **Reject them one by one**.
+
+6. Commit changes.
 
     Don't forget to `git add -A`.
 
@@ -58,7 +65,6 @@ Things not covered by this addon
     ```js
     "scripts": {
       "build": "ember build",
-      "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
       "lint:hbs": "ember-template-lint .",
       "lint:ts": "tsc --noEmit",
       "lint:eslint": "eslint . --ext .js,.ts",
