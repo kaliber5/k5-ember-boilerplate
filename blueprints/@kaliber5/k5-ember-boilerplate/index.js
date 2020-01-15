@@ -88,9 +88,9 @@ module.exports = {
       {name: 'ember-welcome-page'},
     ]);
 
-    await this._modifyPackageJson();
+    this._modifyPackageJson();
     await this._modifyRouter();
-    await this._removeFiles();
+    this._removeFiles();
   },
 
   // https://github.com/typed-ember/ember-cli-typescript/blob/v3.1.2/ts/blueprints/ember-cli-typescript/index.js#L188-L216
@@ -137,10 +137,10 @@ module.exports = {
     this.ui.writeLine('Added not-found route to app/router.js');
   },
 
-  async _removeFiles() {
-    await fs.unlink(`${this.project.root}/.eslintrc.js`); // replaced by `.eslintrc.yml`
-    await fs.unlink(`${this.project.root}/app/styles/app.css`); // replaced by `app.scss`
-    await fs.unlink(`${this.project.root}/tests/acceptance/steps/steps.js`); // replaced by `steps.ts`
+  _removeFiles() {
+    fs.unlinkSync(`${this.project.root}/.eslintrc.js`); // replaced by `.eslintrc.yml`
+    fs.unlinkSync(`${this.project.root}/app/styles/app.css`); // replaced by `app.scss`
+    fs.unlinkSync(`${this.project.root}/tests/acceptance/steps/steps.js`); // replaced by `steps.ts`
   },
 
 
