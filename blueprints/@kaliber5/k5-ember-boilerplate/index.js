@@ -143,15 +143,19 @@ module.exports = {
       ['app/styles/app.css', 'app.scss'],
       ['tests/acceptance/steps/steps.js', 'steps.ts'],
     ].forEach(([filename, replacement]) => {
-      fs.unlinkSync(`${this.project.root}/${filename}`);
+      const fullName = `${this.project.root}/${filename}`;
 
-      let message = `Removed ${filename}`;
+      if (fs.existsSyn(fullName)) {
+        fs.unlinkSync();
 
-      if (replacement) {
-        message = `${message} (substituted with ${replacement})`;
+        let message = `Removed ${filename}`;
+
+        if (replacement) {
+          message = `${message} (substituted with ${replacement})`;
+        }
+
+        this.ui.writeLine(message);
       }
-
-      this.ui.writeLine(message);
     });
   },
 
