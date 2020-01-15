@@ -146,7 +146,7 @@ module.exports = {
       const fullName = `${this.project.root}/${filename}`;
 
       if (fs.existsSync(fullName)) {
-        fs.unlinkSync();
+        fs.unlinkSync(fullName);
 
         let message = `Removed ${filename}`;
 
