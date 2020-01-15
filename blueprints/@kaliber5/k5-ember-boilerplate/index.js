@@ -145,7 +145,7 @@ module.exports = {
     ].forEach(([filename, replacement]) => {
       const fullName = `${this.project.root}/${filename}`;
 
-      if (fs.existsSyn(fullName)) {
+      if (fs.existsSync(fullName)) {
         fs.unlinkSync();
 
         let message = `Removed ${filename}`;
