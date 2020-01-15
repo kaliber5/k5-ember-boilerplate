@@ -31,7 +31,7 @@ Usage
 
     ```
     cd <app-name>
-    ember i @kaliber5/k5-ember-blueprint
+    ember i @kaliber5/k5-ember-boilerplate
     ```
 
 4. The addon will apply code changes, producing a number of conflicts. Resolve them one by one by answering Yes in the terminal, **until it starts installing dependencies**. Keep an eye for that.
