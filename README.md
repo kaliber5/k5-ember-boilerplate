@@ -1,35 +1,96 @@
 k5-ember-boilerplate
 ==============================================================================
 
-[Short description of the addon.]
+A boilerplate for Ember apps, tailored for use in kaliber5
 
-
-Compatibility
-------------------------------------------------------------------------------
-
-* Ember.js v2.18 or above
-* Ember CLI v2.13 or above
-* Node.js v8 or above
-
-
-Installation
-------------------------------------------------------------------------------
-
-```
-ember install k5-ember-boilerplate
-```
 
 
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+0. Get fresh versions of Node and Yarn installed on your machine.
+
+    Ideally, use [Volta](https://volta.sh/).
+
+1. Create a new Ember app:
+
+    ```
+    npm cache clean --force
+    npx ember-cli new <app-name> --yarn
+    ```
+
+2. Configure our private npm registry.
+
+    Put this into `.yarnrc`:
+
+    ```
+    "@kaliber5:registry" "https://npm.kaliber5.de"
+    ```
+
+3. Install the addon:
+
+    ```
+    cd <app-name>
+    ember i @kaliber5/k5-ember-blueprint
+    ```
+
+4. The addon will apply code changes, producing a number of conflicts. Resolve them one by one by answering Yes in the terminal, **until it starts installing dependencies**. Keep an eye for that.
+
+5. As it's installing dependencies, it will apply code changes from blueprints of installed addons. **Reject them one by one**.
+
+6. Commit changes.
+
+    Don't forget to `git add -A`.
+
+
+
+Things not covered by this addon
+------------------------------------------------------------------------------
+
+1. Install Volta on your machine: https://volta.sh/
+
+    Then lock Node && Yarn versions in `package.json`:
+
+    ```js
+    "volta": {
+      "node": "12.10.0",
+      "yarn": "1.17.3"
+    }
+    ```
+
+    Exact version numbers should match the ones used by your CI.
+
+2. Set up scripts and git hooks:
+
+    ```js
+    "scripts": {
+      "build": "ember build",
+      "lint:hbs": "ember-template-lint .",
+      "lint:ts": "tsc --noEmit",
+      "lint:eslint": "eslint . --ext .js,.ts",
+      "lint:js": "yarn lint:ts && yarn lint:eslint",
+      "lint": "yarn lint:js && yarn lint:hbs",
+      "lint-staged": "lint-staged",
+      "start": "ember serve",
+      "test": "ember test",
+      "test:ci": "mkdir -p test-results && ember test > test-results/ember.xml --silent -r xunit",
+      "dev-prod": "cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-prod.kaliber5.de",
+      "dev-staging": "cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-staging.kaliber5.de"
+    },
+    "husky": {
+      "hooks": {
+        "pre-commit": "lint-staged"
+      }
+    },
+    ```
+
 
 
 Contributing
 ------------------------------------------------------------------------------
 
 See the [Contributing](CONTRIBUTING.md) guide for details.
+
 
 
 License
