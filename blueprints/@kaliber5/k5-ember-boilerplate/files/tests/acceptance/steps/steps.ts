@@ -9,6 +9,8 @@ import powerSelectSteps from 'ember-cli-yadda-opinionated/test-support/steps/pow
 import errorHandlingSteps from './_error-handling';
 import windowSteps from './_window';
 
+type YaddaEvent = { data: { step: string }, name: string };
+
 labelMap.set('Bootstrap-Field-Error', '.help-block');
 
 export const dictionary = new yadda.Dictionary().define('number', /(\d+)/, yadda.converters.integer);
@@ -16,7 +18,7 @@ export const dictionary = new yadda.Dictionary().define('number', /(\d+)/, yadda
 setupDictionary(dictionary);
 
 // if (config.settings.debug) {
-yadda.EventBus.instance().on(yadda.EventBus.ON_EXECUTE, function(event: any) {
+yadda.EventBus.instance().on(yadda.EventBus.ON_EXECUTE, function(event: YaddaEvent) {
   console.debug(`Step: ${event.data.step}`, event.data);
 });
 // }

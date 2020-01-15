@@ -1,12 +1,13 @@
 import Helper from '@ember/component/helper';
-import translateError from '<%= dasherizedPackageName %>/utils/t-error';
+import translateError, { AnyError } from '<%= dasherizedPackageName %>/utils/t-error';
 import { inject as service } from '@ember/service';
+import Intl from 'ember-intl/services/intl';
 
 export default class TranslateError extends Helper {
   @service
-  intl: any;
+  intl!: Intl;
 
-  compute([error]: any[]): string | null {
+  compute([error]: AnyError[]): string | null {
     return error ? translateError(this.intl, error) : null;
   }
 }

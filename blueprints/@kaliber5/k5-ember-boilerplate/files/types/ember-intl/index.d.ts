@@ -20,10 +20,10 @@ declare module 'ember-intl/services/intl' {
     maximumSignificantDigits?: number;
   }
   export default class Intl extends Service {
-    t(key: string, options?: any): string;
+    t(key: string, options?: any): string; // eslint-disable-line @typescript-eslint/no-explicit-any
     formatNumber(value: number, options?: FormatNumberOptions): string;
     setLocale(locale: string | string[]);
     exists(key: string, locale?: string | string[]): boolean;
-    lookup(key: string, locale?: string | string[], options?: any): string;
+    lookup(key: string, locale?: string | string[], options?: any): string; // eslint-disable-line @typescript-eslint/no-explicit-any
   }
 }

@@ -7,7 +7,7 @@ export function checkPending(): boolean {
   return pending === 0;
 }
 
-export default function waitForInTests(_target: any, _propertyKey: string, desc: PropertyDescriptor): void {
+export default function waitForInTests(_target: unknown, _propertyKey: string, desc: PropertyDescriptor): void {
   assert('The @waitFor decorator must be applied to functions', desc && typeof desc.value === 'function');
 
   if (!Ember.testing) {
@@ -16,7 +16,7 @@ export default function waitForInTests(_target: any, _propertyKey: string, desc:
 
   const orig = desc.value;
 
-  desc.value = async function(...args: any[]): Promise<any> {
+  desc.value = async function(...args: unknown[]): Promise<unknown> {
     pending++;
     try {
       return await orig.apply(this, args);

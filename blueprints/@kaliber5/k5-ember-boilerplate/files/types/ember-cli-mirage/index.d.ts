@@ -15,7 +15,7 @@ declare global {
 export type ID = number | string;
 
 export interface AnyAttrs {
-  [key: string]: any;
+  [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 type Record<T> = T & { id: ID };
@@ -103,11 +103,11 @@ export type Schema = {
 };
 
 export declare class Response {
-  constructor(code: number, headers: Record<string, string>, body: any);
+  constructor(code: number, headers: Record<string, string>, body: any); // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface Request {
-  requestBody: any;
+  requestBody: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   url: string;
   params: {
     [key: string]: string | number;
@@ -134,17 +134,17 @@ export type NormalizedRequestAttrs<T> = {
 
 export interface HandlerContext {
   request: Request;
-  serialize(modelOrCollection: ModelInstance | ModelInstance[] | ModelClass, serializerName?: string): any;
+  serialize(modelOrCollection: ModelInstance | ModelInstance[] | ModelClass, serializerName?: string): any; // eslint-disable-line @typescript-eslint/no-explicit-any
   normalizedRequestAttrs<M extends keyof ModelRegistry>(model: M): NormalizedRequestAttrs<ModelRegistry[M]>;
 }
 interface HandlerObject {
-  [k: string]: any;
+  [k: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 interface HandlerOptions {
   timing?: number;
   coalesce?: boolean;
 }
-export type HandlerFunction = (this: HandlerContext, schema: Schema, request: Request) => any;
+export type HandlerFunction = (this: HandlerContext, schema: Schema, request: Request) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 /* tslint:disable unified-signatures */
 function handlerDefinition(path: string, options?: HandlerOptions): void;
@@ -194,7 +194,7 @@ export interface Server {
   namespace: string;
   timing: number;
   logging: boolean;
-  pretender: any;
+  pretender: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   urlPrefix: string;
 
   get: typeof handlerDefinition;
@@ -216,7 +216,7 @@ export interface Server {
 
   // TODO when https://github.com/Microsoft/TypeScript/issues/1360
   // passthrough(...paths: string[], verbs?: Verb[]): void;
-  passthrough(...args: any[]): void;
+  passthrough(...args: any[]): void; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   create<T extends keyof ModelRegistry>(modelName: T, ...traits: string[]): ModelInstance<ModelRegistry[T]>;
   create<T extends keyof ModelRegistry>(
@@ -256,7 +256,7 @@ export function trait<M extends ModelRegistry[keyof ModelRegistry], O extends Tr
 // TODO when https://github.com/Microsoft/TypeScript/issues/1360
 // function association(...traits: string[], overrides?: { [key: string]: any }): any;
 
-export function association(...args: any[]): any;
+export function association(...args: any[]): any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export type FactoryAttrs<T> = {
   [P in keyof T]?: T[P] | ((index: number) => T[P]);
@@ -280,5 +280,5 @@ export class JSONAPISerializer {
   typeKeyForModel(model: ModelInstance): string;
 
   serialize(object: ModelInstance, request: Request): SingleResourceDocument;
-  normalize(json: any): any;
+  normalize(json: any): any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
