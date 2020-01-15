@@ -138,9 +138,21 @@ module.exports = {
   },
 
   _removeFiles() {
-    fs.unlinkSync(`${this.project.root}/.eslintrc.js`); // replaced by `.eslintrc.yml`
-    fs.unlinkSync(`${this.project.root}/app/styles/app.css`); // replaced by `app.scss`
-    fs.unlinkSync(`${this.project.root}/tests/acceptance/steps/steps.js`); // replaced by `steps.ts`
+    [
+      ['.eslintrc.js', '.eslintrc.yml'],
+      ['app/styles/app.css', 'app.scss'],
+      ['tests/acceptance/steps/steps.js', 'steps.ts'],
+    ].forEach(([filename, replacement]) => {
+      fs.unlinkSync(`${this.project.root}/${filename}`);
+
+      let message = `Removed ${filename}`;
+
+      if (replacement) {
+        message = `${message} (substituted with ${replacement})`;
+      }
+
+      this.ui.writeLine(message);
+    });
   },
 
 
