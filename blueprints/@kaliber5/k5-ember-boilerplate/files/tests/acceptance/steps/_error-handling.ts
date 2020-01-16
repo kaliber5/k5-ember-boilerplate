@@ -2,6 +2,8 @@ import Ember from 'ember';
 
 let originalErrorHandler: (error: Error) => void | null | undefined;
 
+// ToDo: fix error typing
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function throwUnlessMatches(error: any, code?: string | number): void {
   // eslint-disable-next-line eqeqeq
   if (code && error.errors && error.errors[0] && error.errors[0].status != code) {

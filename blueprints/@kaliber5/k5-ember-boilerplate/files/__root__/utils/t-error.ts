@@ -1,6 +1,11 @@
-import { isPresent } from '@ember/utils';
-import { underscore } from '@ember/string';
 import DS from 'ember-data';
+import Intl from 'ember-intl/services/intl';
+import EmberError from '@ember/error';
+import AccessDeniedError from './errors/access-denied';
+import CredentialsError from './errors/credentials';
+import HttpResponseError from './errors/http-response';
+import NotFoundError from './errors/not-found';
+import OfflineError from './errors/offline';
 
 const ErrorMapping = [
   [DS.UnauthorizedError, 'unauthorized'],
@@ -9,8 +14,20 @@ const ErrorMapping = [
   [DS.ServerError, 'server_error'],
 ];
 
-export function errorTranslationKey(intl: any, error: any, keyPrefix = 'exceptions'): string | void {
-  const rawMessage = isPresent(error.message) ? error.message : String(error);
+type Err =
+  | EmberError
+  | DS.UnauthorizedError
+  | DS.ForbiddenError
+  | DS.NotFoundError
+  | DS.ServerError
+  | AccessDeniedError
+  | CredentialsError
+  | HttpResponseError
+  | NotFoundError
+  | OfflineError;
+
+export function errorTranslationKey(intl: Intl, error: Err, keyPrefix = 'exceptions'): string | void {
+  const rawMessage = 'message' in error ? error.message : String(error);
   let key = `${keyPrefix}.${rawMessage}`;
 
   // try translation of error.message
@@ -20,7 +37,8 @@ export function errorTranslationKey(intl: any, error: any, keyPrefix = 'exceptio
 
   // check if error is an ember-data error with a known mapping
   if (error instanceof DS.AdapterError) {
-    const found = ErrorMapping.find(([klass]) => error instanceof (klass as any));
+    // @ts-ignore
+    const found = ErrorMapping.find(([klass]) => error instanceof klass);
     if (found) {
       key = `${keyPrefix}.${found[1]}`;
       if (intl.exists(key)) {
@@ -30,29 +48,21 @@ export function errorTranslationKey(intl: any, error: any, keyPrefix = 'exceptio
   }
 
   // try translation of error.messageKey
-  if (isPresent(error.messageKey)) {
+  if ('messageKey' in error) {
     key = `${keyPrefix}.${error.messageKey}`;
-    if (intl.exists(key)) {
-      return key;
-    }
-  }
-
-  // try translation of error.description
-  if (typeof error.description === 'string') {
-    key = `${keyPrefix}.${underscore(error.description.toLowerCase())}`;
     if (intl.exists(key)) {
       return key;
     }
   }
 }
 
-export default function translateError(intl: any, error: any, keyPrefix = 'exceptions'): string {
+export default function translateError(intl: Intl, error: Err, keyPrefix = 'exceptions'): string {
   const key = errorTranslationKey(intl, error, keyPrefix);
 
   if (key) {
     return intl.t(key);
   }
 
-  const rawMessage = isPresent(error.message) ? error.message : String(error);
+  const rawMessage = 'message' in error ? error.message : String(error);
   return rawMessage;
 }

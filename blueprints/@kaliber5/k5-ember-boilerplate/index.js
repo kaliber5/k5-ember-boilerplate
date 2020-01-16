@@ -63,6 +63,7 @@ module.exports = {
       {name: 'chai-as-promised'},
       {name: 'chai-dom'},
       {name: 'cross-env'},
+      {name: 'eslint'},
       {name: 'eslint-config-prettier'},
       {name: 'eslint-config-standard'},
       {name: 'eslint-import-resolver-typescript'},
@@ -87,9 +88,10 @@ module.exports = {
       {name: 'ember-welcome-page'},
     ]);
 
-
-    await this._modifyPackageJson();
+    this._modifyPackageJson();
     await this._modifyRouter();
+    this._removeFiles();
+    this._renameEslintConfig();
   },
 
   // https://github.com/typed-ember/ember-cli-typescript/blob/v3.1.2/ts/blueprints/ember-cli-typescript/index.js#L188-L216
@@ -134,7 +136,34 @@ module.exports = {
     });
 
     this.ui.writeLine('Added not-found route to app/router.js');
-  }
+  },
 
+  _removeFiles() {
+    [
+      ['.eslintrc.js', '.eslintrc.yml'],
+      ['app/styles/app.css', 'app.scss'],
+      ['tests/acceptance/steps/steps.js', 'steps.ts'],
+    ].forEach(([filename, replacement]) => {
+      const fullName = `${this.project.root}/${filename}`;
+
+      if (fs.existsSync(fullName)) {
+        fs.unlinkSync(fullName);
+
+        let message = `Removed ${filename}`;
+
+        if (replacement) {
+          message = `${message} (substituted with ${replacement})`;
+        }
+
+        this.ui.writeLine(message);
+      }
+    });
+  },
+
+  _renameEslintConfig() {
+    const originalName = `${this.project.root}/.eslintrc.yml.rename`;
+    const newName = `${this.project.root}/.eslintrc.yml`;
+    fs.renameSync(originalName, newName);
+  },
 
 };

@@ -6,9 +6,7 @@ export default function setupFlashMessages(hooks: NestedHooks): void {
   hooks.beforeEach(function() {
     if (!hasReopened) {
       FlashObject.reopen({
-        init() {
-          // Replacing with an empty method
-        },
+        init() {}, // eslint-disable-line @typescript-eslint/no-empty-function
       });
       hasReopened = true;
     }
