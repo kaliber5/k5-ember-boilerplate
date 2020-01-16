@@ -17,6 +17,9 @@ module.exports = {
   },
   rules: {
   },
+  ignorePatterns: [
+    'blueprints/',
+  ],
   overrides: [
     // node files
     {
