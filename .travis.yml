@@ -44,8 +44,9 @@ jobs:
 
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
-    - stage: "Additional Tests"
-    - env: EMBER_TRY_SCENARIO=ember-lts-3.4
+    -
+      stage: "Additional Tests"
+      env: EMBER_TRY_SCENARIO=ember-lts-3.4
     - env: EMBER_TRY_SCENARIO=ember-lts-3.8
     - env: EMBER_TRY_SCENARIO=ember-release
     - env: EMBER_TRY_SCENARIO=ember-beta
@@ -55,6 +56,9 @@ jobs:
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
+
+install:
+  - yarn install --no-lockfile --non-interactive
 
 script:
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
