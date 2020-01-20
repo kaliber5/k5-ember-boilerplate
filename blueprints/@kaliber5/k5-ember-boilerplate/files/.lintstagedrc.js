@@ -10,7 +10,7 @@ module.exports = {
   '{*,.*,blueprints/*/*,config/**/*,lib/*/index,server/**/*}.{js,ts}': () => 'yarn lint:ts -p tsconfig-node.json',
 
   // Run ESLint, typescript-eslint and Prettier on staged files only
-  '**/*.{js,ts}': ['yarn lint:eslint --fix', 'git add'],
+  '**/*.{js,ts}': ['yarn lint:eslint --fix'],
 
   // Template lint
   '**/*.hbs': ['yarn ember-template-lint'],
