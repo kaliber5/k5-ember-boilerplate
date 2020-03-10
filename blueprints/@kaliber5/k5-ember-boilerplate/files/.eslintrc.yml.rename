@@ -111,7 +111,7 @@ overrides:
       - tests/**/*.js
 
     rules:
-      no-unused-expressions: off # Chai needs this
+      "@typescript-eslint/no-unused-expressions": off # Chai needs this
 
   -
     files:
