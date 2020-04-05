@@ -38,7 +38,11 @@ Usage
 
 5. As it's installing dependencies, it will apply code changes from blueprints of installed addons. **Reject them one by one**.
 
-6. Commit changes.
+6. Run `yarn lint:eslint --fix`, then fix any remaining errors by hand.
+
+    You are encouraged to create a PR to this repo, so that you don't have to fix them by hand again.
+
+7. Commit changes.
 
     Don't forget to `git add -A`.
 
