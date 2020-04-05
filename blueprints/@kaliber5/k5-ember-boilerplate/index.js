@@ -142,6 +142,7 @@ module.exports = {
     [
       ['.eslintrc.js', '.eslintrc.yml'],
       ['app/styles/app.css', 'app.scss'],
+      ['app/templates/application.hbs', 'app/pods/application/template.hbs'],
       ['tests/acceptance/steps/steps.js', 'steps.ts'],
       ['tests/helpers/flash-message.js', 'setup-flash-messages.ts'],
     ].forEach(([filename, replacement]) => {
