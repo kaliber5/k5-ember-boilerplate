@@ -18,7 +18,6 @@ module.exports = {
     browser: true
   },
   rules: {
-    'node/no-unpublished-require': false,
   },
   ignorePatterns: [
     'blueprints/',
