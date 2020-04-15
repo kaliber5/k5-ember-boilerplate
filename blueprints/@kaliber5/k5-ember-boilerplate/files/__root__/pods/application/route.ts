@@ -5,7 +5,7 @@ import Intl from 'ember-intl/services/intl';
 export default class ApplicationRoute extends Route {
   @service intl!: Intl;
 
-  beforeModel(): void | Promise<any> {
+  beforeModel(): void | Promise<unknown> {
     this.intl.setLocale('de-de');
   }
 }
