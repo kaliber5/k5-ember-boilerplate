@@ -43,6 +43,7 @@ rules:
   "@typescript-eslint/camelcase":             off   # Allow two levels of separation, e. g. ProductWizard_SidebarConfig_ListWithHeader_Component_Args
   "@typescript-eslint/class-name-casing":     off   # Allow two levels of separation, e. g. ProductWizard_SidebarConfig_ListWithHeader_Component_Args
   "@typescript-eslint/no-empty-interface":    off   # Required for simplified typing of Mirage and Ember Data
+  "@typescript-eslint/no-non-null-assertion": off   # When I do it, I mean it.
   "@typescript-eslint/no-unused-expressions": error
   "@typescript-eslint/no-unused-vars":        [error, {argsIgnorePattern: "^_"}]
 
