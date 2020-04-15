@@ -9,7 +9,7 @@ module.exports = function(defaults) {
       bootstrapVersion: 4,
       importBootstrapFont: false,
       importBootstrapCSS: false,
-      whitelist: ['bs-button', 'bs-modal'],
+      whitelist: ['bs-alert', 'bs-button', 'bs-modal'],
     },
 
     'ember-composable-helpers': {
