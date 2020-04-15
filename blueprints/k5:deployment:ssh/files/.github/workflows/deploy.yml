@@ -1,0 +1,60 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - develop
+    tags:
+      - 'v*'
+
+jobs:
+  staging:
+    name: Deploy to staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Deploy to staging
+        run: yarn deploy staging
+        env:
+          DOTENV: staging-normal
+          DEPLOY_HOST: "###ssh_host_staging###"
+          DEPLOY_USER: "###ssh_user_staging###"
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY_STAGING }}
+          DEPLOY_PATH: "###ssh_path_staging###"
+          EMBER_API_HOST: "###api_host_staging###"
+  production:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Deploy to production
+        run: yarn deploy production
+        env:
+          DOTENV: prod-normal
+          DEPLOY_HOST: "###ssh_host_production###"
+          DEPLOY_USER: "###ssh_user_production###"
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY_PRODUCTION }}
+          DEPLOY_PATH: "###ssh_path_production###"
+          EMBER_API_HOST: "###api_host_production###"
