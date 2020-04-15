@@ -70,7 +70,7 @@ module.exports = {
       {name: 'eslint-plugin-import'},
       {name: 'eslint-plugin-json'},
       {name: 'eslint-plugin-prettier'},
-      {name: 'eslint-plugin-promise'},
+      {name: 'eslint-plugin-promise'},~
       {name: 'eslint-plugin-standard'},
       {name: 'faker'},
       {name: 'husky'},
@@ -80,7 +80,7 @@ module.exports = {
       {name: 'sass'},
       {name: 'sinon'},
       {name: 'sinon-chai'},
-      {name: 'typescript', target: '^3.7.5'},
+      {name: 'typescript', target: '~3.7.5'},
       {name: 'yadda'},
     ]);
 
