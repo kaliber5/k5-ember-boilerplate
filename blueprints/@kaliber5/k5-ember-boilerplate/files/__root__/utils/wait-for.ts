@@ -16,7 +16,7 @@ export default function waitForInTests(_target: unknown, _propertyKey: string, d
 
   const orig = desc.value;
 
-  desc.value = async function(...args: unknown[]): Promise<unknown> {
+  desc.value = async function (...args: unknown[]): Promise<unknown> {
     pending++;
     try {
       return await orig.apply(this, args);

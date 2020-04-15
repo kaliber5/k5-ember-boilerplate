@@ -10,7 +10,7 @@ import { setupYaddaOpinionated } from 'ember-cli-yadda-opinionated/test-support'
 
 // call back functions
 function ignoreIt(testElement) {
-  skip(`${testElement.title}`, function(/* assert */) {}); // eslint-disable-line @typescript-eslint/no-empty-function
+  skip(`${testElement.title}`, function (/* assert */) {}); // eslint-disable-line @typescript-eslint/no-empty-function
 }
 
 function logIt(testElement) {

@@ -2,11 +2,8 @@ const fs = require('fs');
 
 const DEFAULT_DOTENV_NAME = 'mirage-normal';
 
-module.exports = function(/* env */) {
-  const dotenvName =
-    (process.env.DOTENV && process.env.DOTENV.length > 0)
-      ? process.env.DOTENV
-      : DEFAULT_DOTENV_NAME;
+module.exports = function (/* env */) {
+  const dotenvName = process.env.DOTENV && process.env.DOTENV.length > 0 ? process.env.DOTENV : DEFAULT_DOTENV_NAME;
 
   const dotenvFileName = `.env-${dotenvName}`;
 

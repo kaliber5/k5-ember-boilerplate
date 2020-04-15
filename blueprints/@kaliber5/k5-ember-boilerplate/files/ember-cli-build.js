@@ -3,7 +3,7 @@
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const fingerprintExtensions = require('broccoli-asset-rev/lib/default-options').extensions;
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
     'ember-bootstrap': {
       bootstrapVersion: 4,

@@ -14,12 +14,12 @@ function translateIfAvailable(intl: Intl, key: string): string | false {
 }
 
 export default function flashMessage(messageSuccess: string, messageError?: string): MethodDecorator {
-  return function(_target: unknown, _propertyKey: string, desc: PropertyDescriptor): void {
+  return function (_target: unknown, _propertyKey: string, desc: PropertyDescriptor): void {
     assert('flashMessage decorator can only be applied to methods.', typeof desc.value === 'function');
 
     const orig = desc.value;
 
-    desc.value = async function(...args: unknown[]): Promise<void> {
+    desc.value = async function (...args: unknown[]): Promise<void> {
       const owner = getOwner(this);
       assert('Target for flashMessage decorator must have an owner', !!owner);
       const flashMessages: FlashMessageService = owner.lookup('service:flash-messages');
@@ -43,12 +43,12 @@ export default function flashMessage(messageSuccess: string, messageError?: stri
 }
 
 export function errorMessage(messageError?: string): MethodDecorator {
-  return function(_target: unknown, _propertyKey: string, desc: PropertyDescriptor): void {
+  return function (_target: unknown, _propertyKey: string, desc: PropertyDescriptor): void {
     assert('flashMessage decorator can only be applied to methods.', typeof desc.value === 'function');
 
     const orig = desc.value;
 
-    desc.value = async function(...args: unknown[]): Promise<void> {
+    desc.value = async function (...args: unknown[]): Promise<void> {
       const owner = getOwner(this);
       assert('Target for flashMessage decorator must have an owner', !!owner);
       const flashMessages: FlashMessageService = owner.lookup('service:flash-messages');
