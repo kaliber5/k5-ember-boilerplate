@@ -14,7 +14,7 @@ const ErrorMapping = [
   [DS.ServerError, 'server_error'],
 ];
 
-type Err =
+export type AnyError =
   | EmberError
   | DS.UnauthorizedError
   | DS.ForbiddenError
@@ -26,7 +26,7 @@ type Err =
   | NotFoundError
   | OfflineError;
 
-export function errorTranslationKey(intl: Intl, error: Err, keyPrefix = 'exceptions'): string | void {
+export function errorTranslationKey(intl: Intl, error: AnyError, keyPrefix = 'exceptions'): string | void {
   const rawMessage = 'message' in error ? error.message : String(error);
   let key = `${keyPrefix}.${rawMessage}`;
 
@@ -56,7 +56,7 @@ export function errorTranslationKey(intl: Intl, error: Err, keyPrefix = 'excepti
   }
 }
 
-export default function translateError(intl: Intl, error: Err, keyPrefix = 'exceptions'): string {
+export default function translateError(intl: Intl, error: AnyError, keyPrefix = 'exceptions'): string {
   const key = errorTranslationKey(intl, error, keyPrefix);
 
   if (key) {

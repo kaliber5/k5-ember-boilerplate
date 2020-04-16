@@ -1,8 +1,6 @@
-
-{{! template-lint-disable no-bare-strings }}
-
-<div>
-  Something wrong happened:
-
+<BsAlert @type="danger" @dismissible={{false}}>
+  <strong>{{t "errors.somethingWentWrong"}}</strong>
   {{t-error this.error}}
-</div>
+  <br>
+  <LinkTo @route="index" class="alert-link">{{t "errors.backToHomepage"}}</LinkTo>
+</BsAlert>
