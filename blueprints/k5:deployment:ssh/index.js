@@ -1,6 +1,7 @@
 'use strict';
 
 const replace = require('replace-in-file');
+const fs = require('fs');
 
 module.exports = {
   description: '',
@@ -17,6 +18,7 @@ module.exports = {
 
   async afterInstall(/* options */) {
     await this._customizeDeploymentWorkflow();
+    this._modifyPackageJson()
   },
 
   async _customizeDeploymentWorkflow() {
@@ -90,5 +92,15 @@ module.exports = {
         { name: 'ember-cli-deploy-simply-ssh' },
       ]
     });
+  },
+
+  _modifyPackageJson() {
+    const pkgPath = `${this.project.root}/package.json`;
+
+    let pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+    pkg.scripts.deploy = 'ember deploy';
+
+    fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+    this.ui.writeLine('Modified package.json');
   }
 };
