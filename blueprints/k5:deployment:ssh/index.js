@@ -18,7 +18,9 @@ module.exports = {
 
   async afterInstall(/* options */) {
     await this._customizeDeploymentWorkflow();
-    this._modifyPackageJson()
+    this._modifyPackageJson();
+
+    this.ui.writeInfoLine('Deployment has been set up. Make sure to add DEPLOY_SSH_KEY_STAGING and DEPLOY_SSH_KEY_PRODUCTION secrets in the Github repo!');
   },
 
   async _customizeDeploymentWorkflow() {
