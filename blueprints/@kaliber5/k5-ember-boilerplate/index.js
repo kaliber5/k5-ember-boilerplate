@@ -91,7 +91,6 @@ module.exports = {
     this._modifyPackageJson();
     await this._modifyRouter();
     this._removeFiles();
-    this._renameEslintConfig();
   },
 
   // https://github.com/typed-ember/ember-cli-typescript/blob/v3.1.2/ts/blueprints/ember-cli-typescript/index.js#L188-L216
@@ -140,7 +139,6 @@ module.exports = {
 
   _removeFiles() {
     [
-      ['.eslintrc.js', '.eslintrc.yml'],
       ['app/styles/app.css', 'app.scss'],
       ['app/templates/application.hbs', 'app/pods/application/template.hbs'],
       ['tests/acceptance/steps/steps.js', 'steps.ts'],
@@ -160,12 +158,6 @@ module.exports = {
         this.ui.writeLine(message);
       }
     });
-  },
-
-  _renameEslintConfig() {
-    const originalName = `${this.project.root}/.eslintrc.yml.rename`;
-    const newName = `${this.project.root}/.eslintrc.yml`;
-    fs.renameSync(originalName, newName);
   },
 
 };
