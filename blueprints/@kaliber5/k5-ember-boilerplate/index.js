@@ -143,6 +143,9 @@ module.exports = {
       ['app/templates/application.hbs', 'app/pods/application/template.hbs'],
       ['tests/acceptance/steps/steps.js', 'steps.ts'],
       ['tests/helpers/flash-message.js', 'setup-flash-messages.ts'],
+      ['.travis.yml'],
+      ['tests/integration/steps/steps.js'],
+      ['tests/unit/steps/steps.js'],
     ].forEach(([filename, replacement]) => {
       const fullName = `${this.project.root}/${filename}`;
 
