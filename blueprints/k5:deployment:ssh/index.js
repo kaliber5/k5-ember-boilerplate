@@ -27,12 +27,9 @@ module.exports = {
     for (const env of environments) {
       const answers = await this._queryDeployment(env);
 
-      Object.assign(locals, {
-        [`ssh_user_${env}`]: answers.ssh_user,
-        [`ssh_host_${env}`]: answers.ssh_host,
-        [`ssh_path_${env}`]: answers.ssh_path,
-        [`api_host_${env}`]: answers.api_host,
-      });
+      for (let key in answers) {
+        locals[`${key}_${env}`] = answers[key];
+      }
     }
   },
 
