@@ -31,6 +31,8 @@ module.exports = {
         locals[`${key}_${env}`] = answers[key];
       }
     }
+
+    locals.regexEscapedPreviewHost = locals.host_staging.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
   },
 
   async _queryDeployment(environment) {

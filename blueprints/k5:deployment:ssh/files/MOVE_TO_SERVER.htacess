@@ -1,0 +1,6 @@
+# Rename this file to .htaccess and copy it to your server's <%= ssh_path_staging %> directory
+
+RewriteEngine on
+
+RewriteCond %{HTTP_HOST} ^preview-(\w+)\.<%= regexEscapedPreviewHost %>$ [NC]
+RewriteRule ^(.*)$ /releases/%1/$1 [L,NC]
