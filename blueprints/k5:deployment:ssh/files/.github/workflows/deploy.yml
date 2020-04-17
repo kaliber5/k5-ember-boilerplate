@@ -28,11 +28,11 @@ jobs:
         run: yarn deploy staging
         env:
           DOTENV: staging-normal
-          DEPLOY_HOST: "###ssh_host_staging###"
-          DEPLOY_USER: "###ssh_user_staging###"
+          DEPLOY_HOST: "<%= ssh_host_staging %>"
+          DEPLOY_USER: "<%= ssh_user_staging %>"
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY_STAGING }}
-          DEPLOY_PATH: "###ssh_path_staging###"
-          EMBER_API_HOST: "###api_host_staging###"
+          DEPLOY_PATH: "<%= ssh_path_staging %>"
+          EMBER_API_HOST: "<%= api_host_staging %>"
   production:
     name: Deploy to production
     runs-on: ubuntu-latest
@@ -53,8 +53,8 @@ jobs:
         run: yarn deploy production
         env:
           DOTENV: prod-normal
-          DEPLOY_HOST: "###ssh_host_production###"
-          DEPLOY_USER: "###ssh_user_production###"
+          DEPLOY_HOST: "<%= ssh_host_production %>"
+          DEPLOY_USER: "<%= ssh_user_production %>"
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY_PRODUCTION }}
-          DEPLOY_PATH: "###ssh_path_production###"
-          EMBER_API_HOST: "###api_host_production###"
+          DEPLOY_PATH: "<%= ssh_path_production %>"
+          EMBER_API_HOST: "<%= api_host_production %>"

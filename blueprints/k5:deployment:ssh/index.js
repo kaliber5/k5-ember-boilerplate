@@ -1,6 +1,5 @@
 'use strict';
 
-const replace = require('replace-in-file');
 const fs = require('fs');
 
 module.exports = {
@@ -12,27 +11,27 @@ module.exports = {
   // locals(options) {
   // },
 
-  async beforeInstall(/* options */) {
+  async beforeInstall(options, locals) {
+    await this._customizeDeploymentWorkflow(locals);
     await this._installDependencies();
   },
 
   async afterInstall(/* options */) {
-    await this._customizeDeploymentWorkflow();
     this._modifyPackageJson();
-
     this.ui.writeInfoLine('Deployment has been set up. Make sure to add DEPLOY_SSH_KEY_STAGING and DEPLOY_SSH_KEY_PRODUCTION secrets in the Github repo!');
   },
 
-  async _customizeDeploymentWorkflow() {
+  async _customizeDeploymentWorkflow(locals) {
     const environments = ['production', 'staging'];
 
     for (const env of environments) {
       const answers = await this._queryDeployment(env);
 
-      await replace({
-        files: '.github/workflows/deploy.yml',
-        from: new RegExp(`###([a-z_]+)_${env}###`, 'g'),
-        to: (match, p1) => answers[p1] || match,
+      Object.assign(locals, {
+        [`ssh_user_${env}`]: answers.ssh_user,
+        [`ssh_host_${env}`]: answers.ssh_host,
+        [`ssh_path_${env}`]: answers.ssh_path,
+        [`api_host_${env}`]: answers.api_host,
       });
     }
   },
