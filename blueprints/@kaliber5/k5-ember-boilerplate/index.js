@@ -83,7 +83,7 @@ module.exports = {
       { name: 'sass' },
       { name: 'sinon' },
       { name: 'sinon-chai' },
-      { name: 'typescript', target: '^3.7.5' },
+      { name: 'typescript', target: '~3.7.5' },
       { name: 'yadda' },
     ]);
 
