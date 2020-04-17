@@ -14,6 +14,9 @@ module.exports = function (deployTarget) {
       dir: process.env.DEPLOY_PATH,
       keep: 5,
     },
+    'revision-data': {
+      type: 'git-commit',
+    },
     // include other plugin configuration that applies to all deploy targets here
   };
 
