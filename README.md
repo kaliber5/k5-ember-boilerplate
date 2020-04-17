@@ -55,17 +55,60 @@ optional generators:
 
 ### Deployment on server using SSH 
 
+This is for a deployment setup based on a classic on-premise LAMP server. It assumes a staging and production
+environment, and also supports preview deployments for Pull Requests.
+
 ```bash
 ember g k5:deployment:ssh
 ```
 
 This will set up `ember-cli-deploy` and a deployment Github workflow. You will need the following information
 at hand:
+* domain
 * SSH username
 * SSH server
 * SSH server path
 * API host
 
+#### Follow-up steps
+
+##### Set up DNS
+
+If not done already, setup the DNS records for your production and staging domains. Also set up the wildcard subdomains
+(e.g. `*.staging.example.com`) for PR previews, as a `CNAME` record of your normal staging domain. 
+
+##### Set up domains on server
+
+If not done already, setup the virtual hosts on your Apache server. The staging and production domains should point to the
+`current` symlink (`serverpath/current` where `severpath` is the path entered when running the generator). 
+Also set up a wildcard (`*`) subdomain, but this one should not point to `current` but its parent directory
+(so the `serverpath` above).
+
+##### Set up SSH keys
+
+```bash
+ssh-keygen -t rsa -b 4096 -m pem -f deploy_key        # generate SSH key
+ssh-copy-id -i ./deploy_key.pub user@your.server.com  # copy public key to server 
+```
+
+##### Set up PR preview rewrite rules
+
+Copy the generated `MOVE_TO_SERVER.htaccess` as `.htaccess` to your server, where the releases are deployed to (`serverpath`).
+E.g. like this:
+
+```bash
+scp -i ./deploy_key ./MOVE_TO_SERVER.htaccess user@your.server.com:/var/www/user/htdocs/frontend/.htaccess
+```
+
+Afterwards delete the file form your project.
+
+##### Set up Github secrets
+
+Then copy the contents of the `deploy_key` file (your secret key) and use this to
+create the `DEPLOY_SSH_KEY_STAGING` and `DEPLOY_SSH_KEY_PRODUCTION` secrets in the Github repo.
+
+Afterwards delete both key files, as they allow anybody direct access to the server. From now on only Github Actions
+will be responsible for deployments. 
 
 Things not covered by this addon
 ------------------------------------------------------------------------------
