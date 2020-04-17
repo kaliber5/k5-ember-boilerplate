@@ -1,0 +1,9 @@
+errors:
+  somethingWentWrong: Something went wrong!
+  backToHomepage: Back to homepage
+
+exceptions:
+  unauthorized: Access denied.
+  forbidden: Access forbidden.
+  not_found: Page not found.
+  server_error: An error occured.

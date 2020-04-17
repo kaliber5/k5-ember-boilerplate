@@ -6,11 +6,11 @@ import { checkPending } from '<%= dasherizedPackageName %>/utils/wait-for';
  * @param hooks
  */
 export default function setupWaitFor(hooks: NestedHooks): void {
-  hooks.beforeEach(function(): void {
+  hooks.beforeEach(function (): void {
     registerWaiter(checkPending);
   });
 
-  hooks.afterEach(function(): void {
+  hooks.afterEach(function (): void {
     unregisterWaiter(checkPending);
   });
 }

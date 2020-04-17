@@ -17,81 +17,81 @@ module.exports = {
   async afterInstall(/* options */) {
     await this.addAddonsToProject({
       packages: [
-        {name: 'ember-bootstrap'},
-        {name: 'ember-cli-dotenv'},
-        {name: 'ember-cli-flash'},
-        {name: 'ember-cli-mirage'},
-        {name: 'ember-cli-sass'},
-        {name: 'ember-cli-typescript'},
-        {name: 'ember-cli-typescript-blueprints'},
-        {name: 'ember-cli-yadda'},
-        {name: 'ember-cli-yadda-opinionated', target: 'kaliber5/ember-cli-yadda-opinionated'},
-        {name: 'ember-composable-helpers'},
-        {name: 'ember-concurrency'},
-        {name: 'ember-concurrency-decorators'},
-        {name: 'ember-concurrency-test-waiter'},
-        {name: 'ember-css-modules', target: '~1.3.0-beta.1'},
-        {name: 'ember-css-modules-sass'},
-        {name: 'ember-intl'},
-        {name: 'ember-math-helpers'},
-        {name: 'ember-svg-jar'},
-        {name: 'ember-truth-helpers'},
-        {name: 'ember-window-mock'},
-      ]
+        { name: 'ember-bootstrap' },
+        { name: 'ember-cli-dotenv' },
+        { name: 'ember-cli-flash' },
+        { name: 'ember-cli-mirage' },
+        { name: 'ember-cli-sass' },
+        { name: 'ember-cli-typescript' },
+        { name: 'ember-cli-typescript-blueprints' },
+        { name: 'ember-cli-yadda' },
+        {
+          name: 'ember-cli-yadda-opinionated',
+          target: 'kaliber5/ember-cli-yadda-opinionated',
+        },
+        { name: 'ember-composable-helpers' },
+        { name: 'ember-concurrency' },
+        { name: 'ember-concurrency-decorators' },
+        { name: 'ember-concurrency-test-waiter' },
+        { name: 'ember-css-modules', target: '~1.3.0-beta.1' },
+        { name: 'ember-css-modules-sass' },
+        { name: 'ember-intl' },
+        { name: 'ember-math-helpers' },
+        { name: 'ember-svg-jar' },
+        { name: 'ember-truth-helpers' },
+        { name: 'ember-window-mock' },
+      ],
     });
 
     await this.addPackagesToProject([
-      {name: '@types/chai'},
-      {name: '@types/chai-as-promised'},
-      {name: '@types/chai-dom'},
-      {name: '@types/ember'},
-      {name: '@types/ember-data'},
-      {name: '@types/ember-qunit'},
-      {name: '@types/ember-test-helpers'},
-      {name: '@types/ember-testing-helpers'},
-      {name: '@types/ember__test-helpers'},
-      {name: '@types/faker'},
-      {name: '@types/lodash'},
-      {name: '@types/qunit'},
-      {name: '@types/rsvp'},
-      {name: '@types/sinon'},
-      {name: '@types/sinon-chai'},
-      {name: '@typescript-eslint/eslint-plugin'},
-      {name: '@typescript-eslint/parser'},
-      {name: 'bootstrap'},
-      {name: 'chai'},
-      {name: 'chai-as-promised'},
-      {name: 'chai-dom'},
-      {name: 'cross-env'},
-      {name: 'eslint'},
-      {name: 'eslint-config-prettier'},
-      {name: 'eslint-config-standard'},
-      {name: 'eslint-import-resolver-typescript'},
-      {name: 'eslint-plugin-import'},
-      {name: 'eslint-plugin-json'},
-      {name: 'eslint-plugin-prettier'},
-      {name: 'eslint-plugin-promise'},~
-      {name: 'eslint-plugin-standard'},
-      {name: 'faker'},
-      {name: 'husky'},
-      {name: 'lint-staged'},
-      {name: 'lodash'},
-      {name: 'prettier'},
-      {name: 'sass'},
-      {name: 'sinon'},
-      {name: 'sinon-chai'},
-      {name: 'typescript', target: '~3.7.5'},
-      {name: 'yadda'},
+      { name: '@types/chai' },
+      { name: '@types/chai-as-promised' },
+      { name: '@types/chai-dom' },
+      { name: '@types/ember' },
+      { name: '@types/ember-data' },
+      { name: '@types/ember-qunit' },
+      { name: '@types/ember-test-helpers' },
+      { name: '@types/ember-testing-helpers' },
+      { name: '@types/ember__test-helpers' },
+      { name: '@types/faker' },
+      { name: '@types/lodash' },
+      { name: '@types/qunit' },
+      { name: '@types/rsvp' },
+      { name: '@types/sinon' },
+      { name: '@types/sinon-chai' },
+      { name: '@typescript-eslint/eslint-plugin' },
+      { name: '@typescript-eslint/parser' },
+      { name: 'bootstrap' },
+      { name: 'chai' },
+      { name: 'chai-as-promised' },
+      { name: 'chai-dom' },
+      { name: 'cross-env' },
+      { name: 'eslint' },
+      { name: 'eslint-config-prettier' },
+      { name: 'eslint-config-standard' },
+      { name: 'eslint-import-resolver-typescript' },
+      { name: 'eslint-plugin-import' },
+      { name: 'eslint-plugin-json' },
+      { name: 'eslint-plugin-prettier' },
+      { name: 'eslint-plugin-promise' },
+      { name: 'eslint-plugin-standard' },
+      { name: 'faker' },
+      { name: 'husky' },
+      { name: 'lint-staged' },
+      { name: 'lodash' },
+      { name: 'prettier' },
+      { name: 'sass' },
+      { name: 'sinon' },
+      { name: 'sinon-chai' },
+      { name: 'typescript', target: '~3.7.5' },
+      { name: 'yadda' },
     ]);
 
-    await this.removePackagesFromProject([
-      {name: 'ember-welcome-page'},
-    ]);
+    await this.removePackagesFromProject([{ name: 'ember-welcome-page' }]);
 
     this._modifyPackageJson();
     await this._modifyRouter();
     this._removeFiles();
-    this._renameEslintConfig();
   },
 
   // https://github.com/typed-ember/ember-cli-typescript/blob/v3.1.2/ts/blueprints/ember-cli-typescript/index.js#L188-L216
@@ -127,12 +127,11 @@ module.exports = {
     this.ui.writeLine('Modified package.json');
   },
 
-
   async _modifyRouter() {
     const route = "  this.route('not-found', { path: '/*wildcard' });";
 
     await this.insertIntoFile('app/router.js', route, {
-      after: 'Router.map(function() {\n'
+      after: 'Router.map(function () {\n',
     });
 
     this.ui.writeLine('Added not-found route to app/router.js');
@@ -140,7 +139,6 @@ module.exports = {
 
   _removeFiles() {
     [
-      ['.eslintrc.js', '.eslintrc.yml'],
       ['app/styles/app.css', 'app.scss'],
       ['app/templates/application.hbs', 'app/pods/application/template.hbs'],
       ['tests/acceptance/steps/steps.js', 'steps.ts'],
@@ -160,12 +158,6 @@ module.exports = {
         this.ui.writeLine(message);
       }
     });
-  },
-
-  _renameEslintConfig() {
-    const originalName = `${this.project.root}/.eslintrc.yml.rename`;
-    const newName = `${this.project.root}/.eslintrc.yml`;
-    fs.renameSync(originalName, newName);
   },
 
 };

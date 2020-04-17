@@ -1,1 +1,1 @@
-export default function(hooks: NestedHooks): void;
+export default function (hooks: NestedHooks): void;
