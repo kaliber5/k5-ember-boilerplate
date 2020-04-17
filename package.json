@@ -23,6 +23,7 @@
     "test:ember-compatibility": "ember try:each",
     "blueprint:fix": "prettier --config 'blueprints/@kaliber5/k5-ember-boilerplate/files/.prettierrc.yml' --write 'blueprints/**/*.(js|ts)'"
   },
+  "dependencies": {},
   "devDependencies": {
     "@ember/optional-features": "^1.3.0",
     "@glimmer/component": "^1.0.0",

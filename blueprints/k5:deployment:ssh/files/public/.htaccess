@@ -1,0 +1,28 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # If you get 404 error, uncomment and change the line below.
+    #RewriteBase /
+
+    #RewriteRule ^index\.html$ - [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . index.html [L]
+</IfModule>
+
+ExpiresActive On
+
+# Cache fingerprinted assets
+<FilesMatch "[a-z-]+-[a-z0-9]{32}\.[a-z]{2,4}$">
+  <IfModule mod_expires.c>
+    ExpiresDefault "access plus 1 year"
+  </IfModule>
+</FilesMatch>
+
+# prevent caching of index.html
+<FilesMatch "index\.html">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache"
+  </IfModule>
+</FilesMatch>

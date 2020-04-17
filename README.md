@@ -47,6 +47,25 @@ Usage
     Don't forget to `git add -A`.
 
 
+Deployment
+------------------------------------------------------------------------------
+
+To setup your deployment configuration, depending on the hosting type you can run additional 
+optional generators:
+
+### Deployment on server using SSH 
+
+```bash
+ember g k5:deployment:ssh
+```
+
+This will set up `ember-cli-deploy` and a deployment Github workflow. You will need the following information
+at hand:
+* SSH username
+* SSH server
+* SSH server path
+* API host
+
 
 Things not covered by this addon
 ------------------------------------------------------------------------------
@@ -63,31 +82,6 @@ Things not covered by this addon
     ```
 
     Exact version numbers should match the ones used by your CI.
-
-2. Set up scripts and git hooks:
-
-    ```js
-    "scripts": {
-      "build": "ember build",
-      "lint:hbs": "ember-template-lint .",
-      "lint:ts": "tsc --noEmit",
-      "lint:eslint": "eslint . --ext .js,.ts",
-      "lint:js": "yarn lint:ts && yarn lint:eslint",
-      "lint": "yarn lint:js && yarn lint:hbs",
-      "lint-staged": "lint-staged",
-      "start": "ember serve",
-      "test": "ember test",
-      "test:ci": "mkdir -p test-results && ember test > test-results/ember.xml --silent -r xunit",
-      "dev-prod": "cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-prod.kaliber5.de",
-      "dev-staging": "cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-staging.kaliber5.de"
-    },
-    "husky": {
-      "hooks": {
-        "pre-commit": "lint-staged"
-      }
-    },
-    ```
-
 
 
 Contributing
