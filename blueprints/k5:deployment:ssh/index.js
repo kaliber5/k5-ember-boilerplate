@@ -18,7 +18,7 @@ module.exports = {
 
   async afterInstall(/* options */) {
     this._modifyPackageJson();
-    this.ui.writeInfoLine('Deployment has been set up. Make sure to add DEPLOY_SSH_KEY_STAGING and DEPLOY_SSH_KEY_PRODUCTION secrets in the Github repo!');
+    this.ui.writeInfoLine('Deployment has been set up. See the docs for next steps: https://github.com/kaliber5/k5-ember-boilerplate/blob/master/README.md#deployment-on-server-using-ssh');
   },
 
   async _customizeDeploymentWorkflow(locals) {
@@ -31,6 +31,8 @@ module.exports = {
         locals[`${key}_${env}`] = answers[key];
       }
     }
+
+    locals.regexEscapedPreviewHost = locals.host_staging.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
   },
 
   async _queryDeployment(environment) {
@@ -39,6 +41,21 @@ module.exports = {
     const prefix = `[${environment}]`;
     return this.ui.prompt(
       [
+        {
+          type: 'input',
+          name: 'host',
+          message: 'What is the domain?',
+          default: `${environment !== 'production' ? environment + '.' : ''}${this.project.name()}.de`,
+          prefix,
+          validate(host) {
+            try {
+              new URL(`http://${host}`);
+              return true;
+            } catch(e) {
+              return e.message;
+            }
+          }
+        },
         {
           type: 'input',
           name: 'ssh_user',
@@ -65,7 +82,9 @@ module.exports = {
           type: 'input',
           name: 'api_host',
           message: 'What is the API host?',
-          default: `https://api.${environment !== 'production' ? environment + '.' : ''}${this.project.name()}.de`,
+          default(answers) {
+            return `https://api.${answers.host}`;
+          },
           prefix,
           validate(host) {
             try {
@@ -88,6 +107,8 @@ module.exports = {
         { name: 'ember-cli-deploy' },
         { name: 'ember-cli-deploy-build' },
         { name: 'ember-cli-deploy-simply-ssh' },
+        { name: 'ember-cli-deploy-revision-data' },
+        { name: 'ember-cli-deploy-display-revisions' },
       ]
     });
   },

@@ -1,4 +1,4 @@
-name: Deploy
+name: CD
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - develop
     tags:
       - 'v*'
+  pull_request:
 
 jobs:
   staging:
@@ -25,6 +26,32 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Deploy to staging
+        run: yarn deploy staging --activate
+        env:
+          DOTENV: staging-normal
+          DEPLOY_HOST: "<%= ssh_host_staging %>"
+          DEPLOY_USER: "<%= ssh_user_staging %>"
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY_STAGING }}
+          DEPLOY_PATH: "<%= ssh_path_staging %>"
+          EMBER_API_HOST: "<%= api_host_staging %>"
+
+  preview:
+    name: Deploy PR for preview
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/pull/')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Deploy to staging for preview
         run: yarn deploy staging
         env:
           DOTENV: staging-normal
@@ -33,6 +60,17 @@ jobs:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY_STAGING }}
           DEPLOY_PATH: "<%= ssh_path_staging %>"
           EMBER_API_HOST: "<%= api_host_staging %>"
+
+      - uses: benjlevesque/short-sha@v1.0
+        id: short-sha
+        with:
+          length: 7
+      - name: Post PR comment
+        uses: thollander/actions-comment-pull-request@1.0.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: "PR is deployed and ready for [preview](http://preview-${{ steps.short-sha.outputs.sha }}.<%= host_staging %>/)! 👀"
+
   production:
     name: Deploy to production
     runs-on: ubuntu-latest
@@ -50,7 +88,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Deploy to production
-        run: yarn deploy production
+        run: yarn deploy production --activate
         env:
           DOTENV: prod-normal
           DEPLOY_HOST: "<%= ssh_host_production %>"
