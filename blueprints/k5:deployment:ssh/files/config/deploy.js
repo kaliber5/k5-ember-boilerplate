@@ -12,7 +12,7 @@ module.exports = function (deployTarget) {
         privateKey: process.env.DEPLOY_SSH_KEY,
       },
       dir: process.env.DEPLOY_PATH,
-      keep: 5,
+      keep: 20,
     },
     'revision-data': {
       type: 'git-commit',

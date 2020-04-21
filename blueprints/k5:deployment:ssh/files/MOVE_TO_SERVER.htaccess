@@ -3,4 +3,7 @@
 RewriteEngine on
 
 RewriteCond %{HTTP_HOST} ^preview-(\w+)\.<%= regexEscapedPreviewHost %>$ [NC]
+RewriteCond <%= ssh_path_staging %>/releases/%1 -d
 RewriteRule ^(.*)$ /releases/%1/$1 [L,NC]
+
+RewriteRule ^ - [R=404,L,NS]
