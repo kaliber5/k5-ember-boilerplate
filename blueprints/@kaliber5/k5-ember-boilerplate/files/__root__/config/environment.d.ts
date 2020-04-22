@@ -13,6 +13,8 @@ declare const config: {
   podModulePrefix: string;
   locationType: string;
   rootURL: string;
+  apiNamespace: string;
+  apiHost: string;
 };
 
 export default config;
