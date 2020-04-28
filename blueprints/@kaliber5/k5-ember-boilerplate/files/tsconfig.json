@@ -35,6 +35,9 @@
       "ember-cli-flash/*": [
         "node_modules/ember-cli-flash/index.d.ts"
       ],
+      "fetch": [
+        "node_modules/ember-fetch"
+      ],
       "select-sass-theme": [
         "lib/select-sass-theme/addon"
       ],
