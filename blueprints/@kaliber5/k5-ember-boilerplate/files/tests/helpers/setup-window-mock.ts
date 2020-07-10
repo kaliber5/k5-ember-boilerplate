@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-
 import sinon from 'sinon';
 import window from 'ember-window-mock';
+import { setupWindowMock } from 'ember-window-mock/test-support';
 
 export default function mockWindow(hooks: NestedHooks): void {
-  hooks.beforeEach(function (): void {
+  setupWindowMock(hooks);
+  hooks.beforeEach(function(): void {
     window.print = sinon.spy();
     window.location.reload = sinon.spy();
   });
