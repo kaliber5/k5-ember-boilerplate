@@ -49,6 +49,10 @@ module.exports = {
       { name: '@types/chai-dom' },
       { name: '@types/ember' },
       { name: '@types/ember-data' },
+      { name: '@types/ember-data__adapter' },
+      { name: '@types/ember-data__model' },
+      { name: '@types/ember-data_serializer' },
+      { name: '@types/ember-data__store' },
       { name: '@types/ember-qunit' },
       { name: '@types/ember-test-helpers' },
       { name: '@types/ember-testing-helpers' },
@@ -83,7 +87,7 @@ module.exports = {
       { name: 'sass' },
       { name: 'sinon' },
       { name: 'sinon-chai' },
-      { name: 'typescript', target: '~3.7.5' },
+      { name: 'typescript', target: '^3.9.0' },
       { name: 'yadda' },
     ]);
 
@@ -101,8 +105,8 @@ module.exports = {
     let pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
 
     pkg.volta = {
-      node: '12.14.1',
-      yarn: '1.21.1',
+      node: '12.18.2',
+      yarn: '1.22.4',
     };
 
     pkg.scripts['lint:hbs'] = 'ember-template-lint .';
