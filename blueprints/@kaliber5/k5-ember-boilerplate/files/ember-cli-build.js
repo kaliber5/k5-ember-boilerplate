@@ -44,6 +44,19 @@ module.exports = function (defaults) {
         ],
       },
     },
+
+    'ember-cli-favicon': {
+      faviconsConfig: {
+        appName: '<%= appName %>',
+        appShortName: '<%= appShortName %>',
+        appDescription: '<%= description %>',
+        developerName: 'kaliber5 GmbH',
+        developerURL: 'https://www.kaliber5.de',
+        lang: '<%= lang %>',
+        background: '#fff', // Background colour for flattened icons. `string`
+        theme_color: '#fff', // Theme color user for example in Android's task switcher. `string`
+      },
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated

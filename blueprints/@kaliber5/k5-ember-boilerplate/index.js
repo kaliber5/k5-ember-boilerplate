@@ -15,11 +15,16 @@ module.exports = {
   //   };
   // }
 
+  async beforeInstall(options, locals) {
+    await this._customize(locals);
+  },
+
   async afterInstall(/* options */) {
     await this.addAddonsToProject({
       packages: [
         { name: 'ember-bootstrap' },
         { name: 'ember-cli-dotenv' },
+        { name: 'ember-cli-favicon' },
         { name: 'ember-cli-flash' },
         { name: 'ember-cli-mirage' },
         { name: 'ember-cli-sass' },
@@ -168,5 +173,44 @@ module.exports = {
       }
     });
   },
+
+  async _customize(locals) {
+    const answers = await this._queryMetaData();
+    Object.assign(locals, answers);
+  },
+
+  async _queryMetaData() {
+    this.ui.writeInfoLine(`Please answer the following questions...`);
+
+    return this.ui.prompt(
+      [
+        {
+          type: 'input',
+          name: 'appName',
+          message: 'What is the app\'s full name?',
+        },
+        {
+          type: 'input',
+          name: 'appShortName',
+          message: 'What is the app\'s short name?',
+          default(answers) {
+            return answers.appName;
+          },
+        },
+        {
+          type: 'input',
+          name: 'description',
+          message: 'What is the app\'s description?',
+        },
+        {
+          type: 'input',
+          name: 'lang',
+          message: 'What is the primary language?',
+          default: 'de-DE',
+        },
+      ]
+    );
+  },
+
 
 };
