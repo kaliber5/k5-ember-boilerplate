@@ -1,3 +1,6 @@
+index:
+  title: Welcome
+
 errors:
   somethingWentWrong: Something went wrong!
   backToHomepage: Back to homepage

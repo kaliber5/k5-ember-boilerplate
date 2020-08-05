@@ -1,6 +1,6 @@
-<BsAlert @type="danger" @dismissible={{false}}>
-  <strong>{{t "errors.somethingWentWrong"}}</strong>
-  {{t-error this.error}}
+<BsAlert @type="danger" @dismissible={{false}} data-test-error-message>
+  <strong data-test-title>{{t "errors.somethingWentWrong"}}</strong>
+  <span data-test-description>{{t-error this.error}}</span>
   <br>
-  <LinkTo @route="index" class="alert-link">{{t "errors.backToHomepage"}}</LinkTo>
+  <LinkTo @route="index" class="alert-link" data-test-link>{{t "errors.backToHomepage"}}</LinkTo>
 </BsAlert>
