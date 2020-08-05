@@ -3,7 +3,9 @@
 
 import MirageModelRegistry from 'ember-cli-mirage/types/registries/model';
 import MirageSchemaRegistry from 'ember-cli-mirage/types/registries/schema';
+// eslint-disable-next-line ember/use-ember-data-rfc-395-imports
 import DS from 'ember-data';
+// eslint-disable-next-line ember/use-ember-data-rfc-395-imports
 import EmberDataModelRegistry from 'ember-data/types/registries/model';
 
 export { default as faker } from 'faker';
@@ -244,7 +246,7 @@ export type TraitOptions<M> = AnyAttrs & {
   afterCreate?: (obj: ModelInstance<M>, svr: Server) => void;
 };
 
-export interface Trait<O extends TraitOptions = {}> {
+export interface Trait<O extends TraitOptions = unknown> {
   extension: O;
   __isTrait__: true;
 }

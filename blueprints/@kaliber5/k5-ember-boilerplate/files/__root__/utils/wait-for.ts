@@ -14,12 +14,13 @@ export default function waitForInTests(_target: unknown, _propertyKey: string, d
     return;
   }
 
-  const orig = desc.value;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  const orig = desc.value as Function;
 
   desc.value = async function (...args: unknown[]): Promise<unknown> {
     pending++;
     try {
-      return await orig.apply(this, args);
+      return (await orig.apply(this, args)) as unknown;
     } finally {
       pending--;
     }
