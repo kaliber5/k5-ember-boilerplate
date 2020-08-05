@@ -1,7 +1,7 @@
-import DS from 'ember-data';
+import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import config from '<%= dasherizedPackageName %>/config/environment';
 
-export default class Application extends DS.JSONAPIAdapter {
+export default class Application extends JSONAPIAdapter {
   namespace = config.apiNamespace;
   host = config.apiHost;
 }
