@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const EmberRouterGenerator = require('ember-router-generator');
 
 module.exports = {
   description: 'A boilerplate for Ember apps, tailored for use in kaliber5',
@@ -133,11 +134,12 @@ module.exports = {
   },
 
   async _modifyRouter() {
-    const route = "  this.route('not-found', { path: '/*wildcard' });";
+    const routerPath = 'app/router.js';
+    const source = fs.readFileSync(routerPath, 'utf-8');
+    const routes = new EmberRouterGenerator(source);
+    const newRoutes = routes.add('not-found', { path: '/*wildcard' });
 
-    await this.insertIntoFile('app/router.js', route, {
-      after: 'Router.map(function () {\n',
-    });
+    fs.writeFileSync(routerPath, newRoutes.code());
 
     this.ui.writeLine('Added not-found route to app/router.js');
   },
