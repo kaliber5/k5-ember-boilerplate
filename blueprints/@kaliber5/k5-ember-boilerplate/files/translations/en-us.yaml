@@ -1,6 +1,7 @@
 index:
   title: Welcome
 
+loading: Loading...
 errors:
   somethingWentWrong: Something went wrong!
   backToHomepage: Back to homepage
