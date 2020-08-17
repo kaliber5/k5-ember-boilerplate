@@ -42,6 +42,7 @@ module.exports = {
         { name: 'ember-css-modules', target: '~1.3.0-beta.1' },
         { name: 'ember-css-modules-sass' },
         { name: 'ember-intl' },
+        { name: 'ember-loading' },
         { name: 'ember-math-helpers' },
         { name: 'ember-svg-jar' },
         { name: 'ember-truth-helpers' },
