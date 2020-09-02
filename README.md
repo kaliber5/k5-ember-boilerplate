@@ -24,7 +24,7 @@ Usage
     Put this into `.yarnrc`:
 
     ```
-    "@kaliber5:registry" "https://npm.kaliber5.de"
+    "@kaliber5:registry" "https://npm.pkg.github.com"
     ```
 
 3. Install the addon:
