@@ -47,6 +47,7 @@ module.exports = {
         { name: 'ember-svg-jar' },
         { name: 'ember-truth-helpers' },
         { name: 'ember-window-mock' },
+        { name: '@ember/test-waiters' },
       ],
     });
 

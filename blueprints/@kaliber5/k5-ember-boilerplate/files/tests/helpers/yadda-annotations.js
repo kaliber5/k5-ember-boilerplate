@@ -3,7 +3,6 @@ import { skip } from 'qunit';
 import setupResetState from './setup-reset-app';
 import { setupApplicationTest, setupRenderingTest, setupTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import setupWaitFor from './setup-wait-for';
 import setupWindowMock from './setup-window-mock';
 import { setupYaddaOpinionated } from 'ember-cli-yadda-opinionated/test-support';
 
@@ -53,7 +52,6 @@ function setupYaddaTest(annotations) {
     return function setupApplicationTestCustom(hooks) {
       setupApplicationTest(hooks);
       setupResetState(hooks);
-      setupWaitFor(hooks);
       setupMirage(hooks);
       setupYaddaOpinionated(hooks);
       setupWindowMock(hooks);
