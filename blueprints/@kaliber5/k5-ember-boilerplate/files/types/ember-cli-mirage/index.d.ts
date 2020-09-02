@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 // https://github.com/samselikoff/ember-cli-mirage/issues/1239#issuecomment-441475708
 // https://github.com/CenterForOpenScience/ember-osf-web/tree/097f9d3b80145a3c004d89e5cb0bee761ad6d791/types/ember-cli-mirage
 
