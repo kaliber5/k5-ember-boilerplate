@@ -8,4 +8,12 @@ export default class ApplicationRoute extends Route {
   beforeModel(): void | Promise<unknown> {
     this.intl.setLocale('de-de');
   }
+
+  afterModel(): void {
+    // Remove static spinner in index.html after app has booted
+    if (typeof document !== 'undefined') {
+      const loader = document.getElementById('app-loading');
+      loader?.parentElement?.removeChild(loader);
+    }
+  }
 }
