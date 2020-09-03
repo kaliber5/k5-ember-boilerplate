@@ -1,0 +1,167 @@
+name: Deployment
+
+on: deployment
+
+jobs:
+  staging:
+    name: Deploy to staging
+    runs-on: ubuntu-latest
+    if: github.event.deployment.environment == 'staging'
+    steps:
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: in_progress
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Deploy to staging
+        run: yarn deploy staging --activate
+        env:
+          DOTENV: staging-normal
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-central-1
+          CFN_ENVIRONMENTNAME: staging
+          CFN_DOMAINNAME: "<%= host_staging %>"
+          CFN_CFCERTIFICATE: "<%= aws_cfcert_staging %>"
+          EMBER_API_HOST: "<%= api_host_staging %>"
+
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: success
+          environment_url: https://<%= host_staging %>/
+          # set the deployed URL also as log_url/target_url, as environment_url is not available as event context within lhci.yml
+          log_url: https://<%= host_staging %>/
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+      - uses: avakar/set-deployment-status@v1
+        if: failure()
+        with:
+          state: failure
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+  preview:
+    name: Deploy PR for preview
+    runs-on: ubuntu-latest
+    if: github.event.deployment.environment == 'preview'
+    steps:
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: in_progress
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Deploy to preview
+        run: yarn deploy preview
+        env:
+          DOTENV: staging-normal
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # We *must* use us-east-1 here as Lambda@Edge functions must live there. Doesn't really matter, as CF serves from edge locations anyway
+          AWS_REGION: us-east-1
+          CFN_ENVIRONMENTNAME: preview
+          CFN_DOMAINNAME: "<%= host_preview %>"
+          CFN_CFCERTIFICATE: "<%= aws_cfcert_preview %>"
+          EMBER_API_HOST: "<%= api_host_preview %>"
+
+      - uses: benjlevesque/short-sha@v1.0
+        id: short-sha
+        with:
+          length: 7
+
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: success
+          environment_url: https://${{ steps.short-sha.outputs.sha }}.<%= host_preview %>/
+          # set the deployed URL also as log_url/target_url, as environment_url is not available as event context within lhci.yml
+          log_url: https://${{ steps.short-sha.outputs.sha }}.<%= host_preview %>/
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+      - uses: avakar/set-deployment-status@v1
+        if: failure()
+        with:
+          state: failure
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+  production:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    if: github.event.deployment.environment == 'production'
+    steps:
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: in_progress
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Deploy to production
+        run: yarn deploy production --activate
+        env:
+          DOTENV: prod-normal
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-central-1
+          CFN_ENVIRONMENTNAME: production
+          CFN_DOMAINNAME: "<%= host_production %>"
+          CFN_CFCERTIFICATE: "<%= aws_cfcert_production %>"
+          EMBER_API_HOST: "<%= api_host_production %>"
+
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: success
+          environment_url: https://<%= host_production %>/
+          # set the deployed URL also as log_url/target_url, as environment_url is not available as event context within lhci.yml
+          log_url: https://<%= host_production %>/
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+      - uses: avakar/set-deployment-status@v1
+        if: failure()
+        with:
+          state: failure
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}

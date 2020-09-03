@@ -74,6 +74,9 @@
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
+  "prettier": {
+    "singleQuote": true
+  },
   "release-it": {
     "plugins": {
       "release-it-lerna-changelog": {

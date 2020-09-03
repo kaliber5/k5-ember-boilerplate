@@ -53,6 +53,56 @@ Deployment
 To setup your deployment configuration, depending on the hosting type you can run additional 
 optional generators:
 
+### Deployment on server using AWS CloudFront/S3
+
+This is a deployment setup pushing assets to S3, with CloudFront CDN in front, using CloudFormation for provisioning
+of the infrastructure. It assumes a staging and production environment, and also supports preview deployments for 
+Pull Requests.
+
+```bash
+ember g k5:deployment:aws
+```
+
+This will set up `ember-cli-deploy` and a deployment Github workflow. You will need the following information
+at hand for every deployment environment:
+* domain
+* ARN for the SSL certificate
+* API host
+
+Note: the SSL certificate must have been created prior to this, and it must be on the `us-east-1` region to be usable 
+for CloudFront. You can use a single certificate for all environments, with all the required (wildcard) domains added, 
+e.g. `example.com`, `*.example.com`, `*.staging.example.com` and `*.preview.example.com`.
+
+#### Follow-up steps
+
+##### Set up Github secrets
+
+Add the secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` with the AWS access key generated for a suitable
+deployment user created in the IAM service on the AWS console, with enough privileges to create all the resources
+defined in the CloudFormation template. 
+
+##### Set up CNAME records
+
+After initial deployment for any of the three environments, so after the CLoudFront distribution has been created by 
+CloudFormation, a DNS `CNAME` record must be created to point the domain to the CloudFront URL. This assumes the domain
+is *not* hosted on AWS (Route 53), otherwise the creation of these records could also be automated using the CloudFront
+template, by defining an additional resource like this.
+
+```yaml
+  Route53Record:
+    Type: 'AWS::Route53::RecordSetGroup'
+    Properties:
+      HostedZoneId: !Ref HostedZoneId # inject this as a parameter, or replace with a static value
+      RecordSets:
+      - Name: !Join ['.', ['*', !Ref DomainName]]
+        Type: A
+        AliasTarget:
+          # Magic AWS number:  For CloudFront, use Z2FDTNDATAQYW2.
+          HostedZoneId: Z2FDTNDATAQYW2
+          DNSName: !GetAtt 'AssetsCDN.DomainName'
+```
+
+
 ### Deployment on server using SSH 
 
 This is for a deployment setup based on a classic on-premise LAMP server. It assumes a staging and production

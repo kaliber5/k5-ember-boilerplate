@@ -1,0 +1,143 @@
+# Create stack of static assets server with S3/CloudFront
+#
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  EnvironmentName:
+    Type: String
+  DomainName:
+    Type: String
+  CFCertificate:
+    Description: 'Existing ACM Certificate ARN for CloudFront. Must be created in the us-east-1 region!'
+    Type: String
+  ForceHttps:
+    Type: String
+    Default: '1'
+    AllowedValues:
+      - 0
+      - 1
+
+Conditions:
+  HasForceHttps: !Equals [ !Ref ForceHttps, '1' ]
+  IsPreview: !Equals [ !Ref EnvironmentName, 'preview' ]
+Resources:
+  AssetsBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      WebsiteConfiguration:
+        IndexDocument: 'index.html'
+  S3BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref AssetsBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject'
+            Effect: Allow
+            Resource:
+              - !Sub 'arn:aws:s3:::${AssetsBucket}/*'
+            Principal: '*'
+          - Action:
+              - 's3:ListBucket'
+            Effect: Allow
+            Resource:
+              - !GetAtt 'AssetsBucket.Arn'
+            Principal: '*'
+  AssetsCDN:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Origins:
+          - DomainName: !GetAtt
+              - AssetsBucket
+              - RegionalDomainName
+            Id: AssetsBucket
+            S3OriginConfig: {}
+        Enabled: true
+        HttpVersion: http2
+        Aliases:
+          - !If [IsPreview, !Join ['.', ['*', !Ref DomainName]], !Ref DomainName]
+        DefaultCacheBehavior:
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+            Headers:
+              - Origin
+          TargetOriginId: AssetsBucket
+          ViewerProtocolPolicy: !If [HasForceHttps, 'redirect-to-https', 'allow-all']
+          LambdaFunctionAssociations:
+            !If
+            - IsPreview
+            -
+              - EventType: viewer-request
+                LambdaFunctionARN: !Ref LambdaFunctionVersion
+            - !Ref 'AWS::NoValue'
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CFCertificate
+          SslSupportMethod: sni-only
+        PriceClass: PriceClass_100
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: '/index.html'
+        DefaultRootObject: 'index.html'
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Condition: IsPreview
+    Properties:
+      Description: >
+        Lambda function performing request URI rewriting for preview deployments
+      Code:
+        ZipFile: |
+          const path = require('path');
+          exports.handler = async(event) => {
+            const request = event.Records[0].cf.request;
+            if (!path.extname(request.uri)) {
+              const host = request.headers.host && request.headers.host[0].value;
+              const accept = request.headers.accept && request.headers.accept[0].value.split(',').map(v => v.trim());
+              if (host && accept && accept.includes('text/html')) {
+                const [revision] = host.split('.');
+                request.uri = `/index.html:${revision}`;
+              }
+            }
+            return request;
+          };
+      Handler: index.handler
+      Role: !Sub ${LambdaFunctionExecutionRole.Arn}
+      Runtime: nodejs12.x
+
+  LambdaFunctionVersion:
+    Type: AWS::Lambda::Version
+    Condition: IsPreview
+    Properties:
+      FunctionName: !Ref LambdaFunction
+      Description: !Sub "URL rewriting for ${DomainName}"
+
+  LambdaFunctionExecutionRole:
+    Type: AWS::IAM::Role
+    Condition: IsPreview
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - edgelambda.amazonaws.com
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+
+Outputs:
+  AssetsBucket:
+    Value: !Ref AssetsBucket
+  CloudFrontDistribution:
+    Value: !Ref AssetsCDN
+  CloudFrontDomainName:
+    Value: !GetAtt 'AssetsCDN.DomainName'
