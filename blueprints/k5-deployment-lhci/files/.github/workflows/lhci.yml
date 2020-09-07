@@ -1,0 +1,24 @@
+name: Lighthouse CI
+on:
+  deployment_status:
+
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    if: github.event.deployment_status.state == 'success'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v3
+        with:
+          urls: |
+            ${{ github.event.deployment_status.target_url }}
+          runs: 10
+          serverBaseUrl: https://lhci.kaliber5.de
+          serverToken: ${{ secrets.LHCI_SERVER_TOKEN }}
+          basicAuthUsername: kaliber5
+          basicAuthPassword: ${{ secrets.LHCI_SERVER_BASICAUTH_PASSWORD }}
+        env:
+          # token provided by LHCI Github APP, to post LHCI results as Github Status Checks
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

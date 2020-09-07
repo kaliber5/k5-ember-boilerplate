@@ -160,6 +160,32 @@ create the `DEPLOY_SSH_KEY_STAGING` and `DEPLOY_SSH_KEY_PRODUCTION` secrets in t
 Afterwards delete both key files, as they allow anybody direct access to the server. From now on only Github Actions
 will be responsible for deployments. 
 
+
+### Running Lighthouse performance audit after deployment
+
+> Note: this requires a running deployment setup using Github `deployment` events
+
+Run Lighthouse CI after each successful deployment, and uploads results to https://lhci.kaliber5.de.
+
+```bash
+ember g k5-deployment-lhci
+```
+
+#### Follow-up steps
+
+#### Create a new project on the Lighthouse Server
+
+```bash
+npx @lhci/cli wizard --basicAuth.username kaliber5 --basicAuth.password <password>
+```
+
+Enter the data in the interactive CLI session as required. Save the tokens. 
+
+##### Set up Github secrets
+
+Add the build token you received from the previous command as a `LHCI_SERVER_TOKEN` secret to the Github repository.
+
+
 Things not covered by this addon
 ------------------------------------------------------------------------------
 
