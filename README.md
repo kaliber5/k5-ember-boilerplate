@@ -60,7 +60,7 @@ of the infrastructure. It assumes a staging and production environment, and also
 Pull Requests.
 
 ```bash
-ember g k5:deployment:aws
+ember g k5-deployment-aws
 ```
 
 This will set up `ember-cli-deploy` and a deployment Github workflow. You will need the following information
@@ -109,7 +109,7 @@ This is for a deployment setup based on a classic on-premise LAMP server. It ass
 environment, and also supports preview deployments for Pull Requests.
 
 ```bash
-ember g k5:deployment:ssh
+ember g k5-deployment-ssh
 ```
 
 This will set up `ember-cli-deploy` and a deployment Github workflow. You will need the following information
