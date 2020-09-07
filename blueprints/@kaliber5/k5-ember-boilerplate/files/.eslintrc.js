@@ -63,6 +63,7 @@ module.exports = {
         'config/**/*.js',
         'lib/*/index.js',
         'server/**/*.js',
+        'lighthouserc.js',
       ],
       parserOptions: {
         sourceType: 'script',
