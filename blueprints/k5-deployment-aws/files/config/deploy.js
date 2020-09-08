@@ -34,6 +34,7 @@ module.exports = function (deployTarget) {
         return context.cloudformation.outputs.AssetsBucket;
       },
       region: process.env.AWS_REGION,
+      filePattern: '**/*.{js,css,png,gif,ico,jpg,map,xml,txt,svg,swf,eot,ttf,woff,woff2,otf,wasm,json}',
     },
     's3-index': {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
