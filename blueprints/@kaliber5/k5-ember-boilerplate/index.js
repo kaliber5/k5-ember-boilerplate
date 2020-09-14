@@ -29,7 +29,6 @@ module.exports = {
         { name: 'ember-cli-mirage' },
         { name: 'ember-cli-sass' },
         { name: 'ember-cli-typescript' },
-        { name: 'ember-cli-typescript-blueprints' },
         { name: 'ember-cli-yadda' },
         {
           name: 'ember-cli-yadda-opinionated',
