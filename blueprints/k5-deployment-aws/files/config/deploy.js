@@ -51,9 +51,13 @@ module.exports = function (deployTarget) {
       distribution(context) {
         return context.cloudformation.outputs.CloudFrontDistribution;
       },
+      region: process.env.AWS_REGION,
     },
     'revision-data': {
       type: 'git-commit',
+    },
+    compress: {
+      filePattern: '**/*.{html,js,css,json,ico,map,xml,txt,svg,eot,ttf,woff,woff2,appcache,webmanifest}',
     },
   };
 
