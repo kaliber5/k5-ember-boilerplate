@@ -34,6 +34,7 @@ module.exports = function (deployTarget) {
         return context.cloudformation.outputs.AssetsBucket;
       },
       region: process.env.AWS_REGION,
+      filePattern: '**/*.{js,css,png,gif,ico,jpg,map,xml,txt,svg,swf,eot,ttf,woff,woff2,otf,wasm,json}',
     },
     's3-index': {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -50,9 +51,13 @@ module.exports = function (deployTarget) {
       distribution(context) {
         return context.cloudformation.outputs.CloudFrontDistribution;
       },
+      region: process.env.AWS_REGION,
     },
     'revision-data': {
       type: 'git-commit',
+    },
+    compress: {
+      filePattern: '**/*.{html,js,css,json,ico,map,xml,txt,svg,eot,ttf,woff,woff2,appcache,webmanifest}',
     },
   };
 

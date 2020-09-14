@@ -96,6 +96,7 @@ module.exports = {
         { name: 'ember-cli-deploy' },
         { name: 'ember-cli-deploy-build' },
         { name: 'ember-cli-deploy-cloudformation' },
+        { name: 'ember-cli-deploy-cloudfront' },
         { name: 'ember-cli-deploy-compress' },
         { name: 'ember-cli-deploy-revision-data' },
         { name: 'ember-cli-deploy-display-revisions' },
