@@ -1,3 +1,22 @@
+## v0.5.0 (2020-10-13)
+
+#### :rocket: Enhancement
+* [#76](https://github.com/kaliber5/k5-ember-boilerplate/pull/76) Restrict ember-scss-modules to the .module.scss file extension ([@lolmaus](https://github.com/lolmaus))
+* [#59](https://github.com/kaliber5/k5-ember-boilerplate/pull/59) Remove ember-cli-typescript-blueprints ([@simonihmig](https://github.com/simonihmig))
+* [#51](https://github.com/kaliber5/k5-ember-boilerplate/pull/51) Add blueprint for Lighthouse CI setup ([@simonihmig](https://github.com/simonihmig))
+* [#42](https://github.com/kaliber5/k5-ember-boilerplate/pull/42) Add deployment blueprint for an AWS CloudFront/S3 setup ([@simonihmig](https://github.com/simonihmig))
+* [#41](https://github.com/kaliber5/k5-ember-boilerplate/pull/41) Add @ember/test-waiters, remove custom waitFor decorator ([@simonihmig](https://github.com/simonihmig))
+
+#### :bug: Bug Fix
+* [#52](https://github.com/kaliber5/k5-ember-boilerplate/pull/52) Fix lint-staged config ([@simonihmig](https://github.com/simonihmig))
+* [#49](https://github.com/kaliber5/k5-ember-boilerplate/pull/49) Rename blueprints to fix Windows issues ([@simonihmig](https://github.com/simonihmig))
+* [#40](https://github.com/kaliber5/k5-ember-boilerplate/pull/40) Remove static spinner in index.html after app has booted ([@simonihmig](https://github.com/simonihmig))
+
+#### Committers: 3
+- Andrey Mikhaylov (lolmaus) ([@lolmaus](https://github.com/lolmaus))
+- Simon Ihmig ([@simonihmig](https://github.com/simonihmig))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v0.4.0 (2020-09-02)
 
 #### :rocket: Enhancement
