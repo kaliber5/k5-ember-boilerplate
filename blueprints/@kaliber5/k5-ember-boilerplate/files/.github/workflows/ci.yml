@@ -25,6 +25,9 @@ jobs:
         with:
           node-version: 12
 
+      - name: Add Github Package Registry Auth Token
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GPR_ACCESS_TOKEN }}" > ~/.npmrc
+
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
 
