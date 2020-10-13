@@ -21,7 +21,8 @@ module.exports = function (defaults) {
     },
 
     cssModules: {
-      headerModules: ['<%= dasherizedPackageName %>/styles/app'],
+      extension: 'module.scss',
+      intermediateOutputPath: 'app/styles/_modules.scss',
     },
 
     fingerprint: {
