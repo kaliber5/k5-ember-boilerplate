@@ -101,3 +101,28 @@ It will prevent from committing unlinted code.
 If you do need to commit unlinted code (e. g. to have your work-in-progress backed up), run `git commit` with the `-n` flag.
 
 If you want to run the hook without the actual commit, `git add` your files and then run `yarn lint-staged`.
+
+
+
+## Working with styles
+
+This boilerplate uses [ember-css-modules](https://github.com/salsify/ember-css-modules) restricted to a compound file extension `.module.scss`.
+
+This is because otherwise `ember-css-modules` treats all `.scss` files as modules, making it impossible to work with Sass partials in a conventional way. If you keep using partials wihtout resolving the problem, you will end up with duplicate CSS, likely without even realizing it.
+
+This is the expected file structure of your app's components and pages:
+
+```
+app/
+    components/
+        my-component.hbs
+        my-component.module.scss
+        my-component.ts
+        
+    pods/
+        my-route/
+            controller.ts
+            route.ts
+            styles.module.scss
+            template.hbs
+```

@@ -47,11 +47,40 @@ Usage
     Don't forget to `git add -A`.
 
 
+
+Working with styles
+------------------------------------------------------------------------------
+
+This boilerplate uses [ember-css-modules](https://github.com/salsify/ember-css-modules) restricted to a compound file extension `.module.scss`.
+
+This is because otherwise `ember-css-modules` treats all `.scss` files as modules, making it impossible to work with Sass partials in a conventional way. If you keep using partials wihtout resolving the problem, you will end up with duplicate CSS, likely without even realizing it.
+
+This is the expected file structure of your app's components and pages:
+
+```
+app/
+    components/
+        my-component.hbs
+        my-component.module.scss
+        my-component.ts
+        
+    pods/
+        my-route/
+            controller.ts
+            route.ts
+            styles.module.scss
+            template.hbs
+```
+
+
+
 Deployment
 ------------------------------------------------------------------------------
 
 To setup your deployment configuration, depending on the hosting type you can run additional 
 optional generators:
+
+
 
 ### Deployment on server using AWS CloudFront/S3
 
@@ -73,6 +102,8 @@ Note: the SSL certificate must have been created prior to this, and it must be o
 for CloudFront. You can use a single certificate for all environments, with all the required (wildcard) domains added, 
 e.g. `example.com`, `*.example.com`, `*.staging.example.com` and `*.preview.example.com`.
 
+
+
 #### Follow-up steps
 
 ##### Set up Github secrets
@@ -80,6 +111,8 @@ e.g. `example.com`, `*.example.com`, `*.staging.example.com` and `*.preview.exam
 Add the secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` with the AWS access key generated for a suitable
 deployment user created in the IAM service on the AWS console, with enough privileges to create all the resources
 defined in the CloudFormation template. 
+
+
 
 ##### Set up CNAME records
 
@@ -103,6 +136,7 @@ template, by defining an additional resource like this.
 ```
 
 
+
 ### Deployment on server using SSH 
 
 This is for a deployment setup based on a classic on-premise LAMP server. It assumes a staging and production
@@ -120,12 +154,16 @@ at hand:
 * SSH server path
 * API host
 
+
+
 #### Follow-up steps
 
 ##### Set up DNS
 
 If not done already, setup the DNS records for your production and staging domains. Also set up the wildcard subdomains
 (e.g. `*.staging.example.com`) for PR previews, as a `CNAME` record of your normal staging domain. 
+
+
 
 ##### Set up domains on server
 
@@ -134,12 +172,16 @@ If not done already, setup the virtual hosts on your Apache server. The staging 
 Also set up a wildcard (`*`) subdomain, but this one should not point to `current` but its parent directory
 (so the `serverpath` above).
 
+
+
 ##### Set up SSH keys
 
 ```bash
 ssh-keygen -t rsa -b 4096 -m pem -f deploy_key        # generate SSH key
 ssh-copy-id -i ./deploy_key.pub user@your.server.com  # copy public key to server 
 ```
+
+
 
 ##### Set up PR preview rewrite rules
 
@@ -152,6 +194,8 @@ scp -i ./deploy_key ./MOVE_TO_SERVER.htaccess user@your.server.com:/var/www/user
 
 Afterwards delete the file form your project.
 
+
+
 ##### Set up Github secrets
 
 Then copy the contents of the `deploy_key` file (your secret key) and use this to
@@ -159,6 +203,7 @@ create the `DEPLOY_SSH_KEY_STAGING` and `DEPLOY_SSH_KEY_PRODUCTION` secrets in t
 
 Afterwards delete both key files, as they allow anybody direct access to the server. From now on only Github Actions
 will be responsible for deployments. 
+
 
 
 ### Running Lighthouse performance audit after deployment
@@ -171,6 +216,8 @@ Run Lighthouse CI after each successful deployment, and uploads results to https
 ember g k5-deployment-lhci
 ```
 
+
+
 #### Follow-up steps
 
 #### Create a new project on the Lighthouse Server
@@ -181,9 +228,12 @@ npx @lhci/cli wizard --basicAuth.username kaliber5 --basicAuth.password <passwor
 
 Enter the data in the interactive CLI session as required. Save the tokens. 
 
+
+
 ##### Set up Github secrets
 
 Add the build token you received from the previous command as a `LHCI_SERVER_TOKEN` secret to the Github repository.
+
 
 
 Things not covered by this addon
@@ -201,6 +251,7 @@ Things not covered by this addon
     ```
 
     Exact version numbers should match the ones used by your CI.
+
 
 
 Contributing
