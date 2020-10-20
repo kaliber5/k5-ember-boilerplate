@@ -125,7 +125,6 @@ module.exports = {
     pkg.scripts['lint-staged'] = 'lint-staged';
     pkg.scripts['start'] = 'ember serve';
     pkg.scripts['test'] = 'ember test';
-    pkg.scripts['test:ci'] = 'mkdir -p test-results && ember test > test-results/ember.xml --silent -r xunit';
     pkg.scripts['dev-prod'] = 'cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-prod.kaliber5.de';
     pkg.scripts['dev-staging'] = 'cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-staging.kaliber5.d';
 
