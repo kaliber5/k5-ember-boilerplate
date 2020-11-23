@@ -102,7 +102,6 @@ module.exports = {
         { name: 'ember-cli-deploy-display-revisions' },
         { name: 'ember-cli-deploy-manifest' },
         { name: 'ember-cli-deploy-s3' },
-        { name: 'ember-cli-deploy-s3-index' },
       ],
     });
   },

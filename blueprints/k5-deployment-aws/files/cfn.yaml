@@ -100,7 +100,7 @@ Resources:
               const accept = request.headers.accept && request.headers.accept[0].value.split(',').map(v => v.trim());
               if (host && accept && accept.includes('text/html')) {
                 const [revision] = host.split('.');
-                request.uri = `/index.html:${revision}`;
+                request.uri = `/${revision}/index.html`;
               }
             }
             return request;
