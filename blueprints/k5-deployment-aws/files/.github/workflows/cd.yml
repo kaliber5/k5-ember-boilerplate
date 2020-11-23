@@ -12,6 +12,7 @@ jobs:
   start_deployment:
     name: Trigger Deployment
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot-preview[bot]'
     steps:
       - uses: avakar/create-deployment@v1
         if: github.ref == 'refs/heads/develop'

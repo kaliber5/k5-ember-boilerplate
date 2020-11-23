@@ -12,7 +12,7 @@ module.exports = function (deployTarget) {
       // To disable CloudFront invalidation, remove this setting or change it to `false`.
       // To disable ember-cli-deploy-cloudfront for only a particular environment, add
       // `ENV.pipeline.activateOnDeploy = false` to an environment conditional below.
-      activateOnDeploy: deployTarget !== 'preview',
+      activateOnDeploy: true,
     },
     cloudformation: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -33,17 +33,11 @@ module.exports = function (deployTarget) {
       bucket(context) {
         return context.cloudformation.outputs.AssetsBucket;
       },
-      region: process.env.AWS_REGION,
-      filePattern: '**/*.{js,css,png,gif,ico,jpg,map,xml,txt,svg,swf,eot,ttf,woff,woff2,otf,wasm,json}',
-    },
-    's3-index': {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      bucket(context) {
-        return context.cloudformation.outputs.AssetsBucket;
+      prefix(context) {
+        return context.revisionData.revisionKey;
       },
       region: process.env.AWS_REGION,
-      filePattern: 'index.html',
+      filePattern: '**/*.{js,css,png,gif,ico,jpg,map,xml,txt,svg,swf,eot,ttf,woff,woff2,otf,wasm,json,html,mp4,webm,ogv}',
     },
     cloudfront: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
