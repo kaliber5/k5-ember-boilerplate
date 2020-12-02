@@ -91,16 +91,25 @@ Resources:
       Description: >
         Lambda function performing request URI rewriting for preview deployments
       Code:
+        # Whenever you update the inline code here, you also need to rename (increase the version number) of the
+        # AWS::Lambda::Version resource! AWS CloudFormation doesn't do this for you, see:
+        # https://stackoverflow.com/questions/41452274/how-to-create-a-new-version-of-a-lambda-function-using-cloudformation?rq=1
         ZipFile: |
           const path = require('path');
           exports.handler = async(event) => {
             const request = event.Records[0].cf.request;
-            if (!path.extname(request.uri)) {
-              const host = request.headers.host && request.headers.host[0].value;
-              const accept = request.headers.accept && request.headers.accept[0].value.split(',').map(v => v.trim());
-              if (host && accept && accept.includes('text/html')) {
-                const [revision] = host.split('.');
-                request.uri = `/${revision}/index.html`;
+            const host = request.headers.host && request.headers.host[0].value;
+            if (host) {
+              const [revision] = host.split('.');
+              if (!path.extname(request.uri)) {
+                const accept = request.headers.accept && request.headers.accept[0].value.split(',').map(v => v.trim());
+                if (accept && accept.includes('text/html')) {
+                  request.uri = `/${revision}/index.html`;
+                } else {
+                  request.uri = `/${revision}${request.uri}`;
+                }
+              } else {
+                request.uri = `/${revision}${request.uri}`;
               }
             }
             return request;
