@@ -1,3 +1,20 @@
+## v0.5.1 (2020-12-02)
+
+#### :rocket: Enhancement
+* [#106](https://github.com/kaliber5/k5-ember-boilerplate/pull/106) Update SSH deployment to new best practices, using deployment events ([@simonihmig](https://github.com/simonihmig))
+* [#101](https://github.com/kaliber5/k5-ember-boilerplate/pull/101) Update AWS deployment to new best practices ([@simonihmig](https://github.com/simonihmig))
+
+#### :bug: Bug Fix
+* [#102](https://github.com/kaliber5/k5-ember-boilerplate/pull/102) Fix AWS deployment ([@simonihmig](https://github.com/simonihmig))
+* [#83](https://github.com/kaliber5/k5-ember-boilerplate/pull/83) Remove unused `test:ci` script ([@simonihmig](https://github.com/simonihmig))
+* [#80](https://github.com/kaliber5/k5-ember-boilerplate/pull/80) Fix deployment config ([@simonihmig](https://github.com/simonihmig))
+* [#77](https://github.com/kaliber5/k5-ember-boilerplate/pull/77) Fix lint-staged config ([@simonihmig](https://github.com/simonihmig))
+* [#78](https://github.com/kaliber5/k5-ember-boilerplate/pull/78) Fix CI config ([@simonihmig](https://github.com/simonihmig))
+
+#### Committers: 2
+- Simon Ihmig ([@simonihmig](https://github.com/simonihmig))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v0.5.0 (2020-10-13)
 
 #### :rocket: Enhancement
