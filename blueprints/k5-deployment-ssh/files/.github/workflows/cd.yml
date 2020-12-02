@@ -1,0 +1,45 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - develop
+    tags:
+      - 'v*'
+  pull_request:
+
+jobs:
+  start_deployment:
+    name: Trigger Deployment
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot-preview[bot]'
+    steps:
+      - uses: avakar/create-deployment@v1
+        if: github.ref == 'refs/heads/develop'
+        with:
+          ref: ${{ github.ref }}
+          environment: staging
+          required_contexts: ''
+          auto_merge: false
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - uses: avakar/create-deployment@v1
+        if: startsWith(github.ref, 'refs/pull/')
+        with:
+          ref: ${{ github.head_ref }}
+          environment: preview
+          required_contexts: ''
+          auto_merge: false
+          transient_environment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - uses: avakar/create-deployment@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          ref: ${{ github.ref }}
+          environment: production
+          required_contexts: ''
+          auto_merge: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}

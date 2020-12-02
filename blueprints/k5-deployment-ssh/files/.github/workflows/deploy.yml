@@ -1,19 +1,19 @@
 name: CD
 
-on:
-  push:
-    branches:
-      - develop
-    tags:
-      - 'v*'
-  pull_request:
+on: deployment
 
 jobs:
   staging:
     name: Deploy to staging
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    if: github.event.deployment.environment == 'staging'
     steps:
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: in_progress
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -38,11 +38,36 @@ jobs:
           DEPLOY_PATH: "<%= ssh_path_staging %>"
           EMBER_API_HOST: "<%= api_host_staging %>"
 
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: success
+          environment_url: https://<%= host_staging %>/
+          # set the deployed URL also as log_url/target_url, as environment_url is not available as event context within lhci.yml
+          log_url: https://<%= host_staging %>/
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+      - uses: avakar/set-deployment-status@v1
+        if: failure()
+        with:
+          state: failure
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
   preview:
     name: Deploy PR for preview
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/pull/')
+    if: github.event.deployment.environment == 'preview'
     steps:
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: in_progress
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -71,17 +96,37 @@ jobs:
         id: short-sha
         with:
           length: 7
-      - name: Post PR comment
-        uses: thollander/actions-comment-pull-request@1.0.0
+
+      - uses: avakar/set-deployment-status@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          message: "PR is deployed and ready for [preview](http://preview-${{ steps.short-sha.outputs.sha }}.<%= host_staging %>/)! 👀"
+          state: success
+          environment_url: https://${{ steps.short-sha.outputs.sha }}.<%= host_preview %>/
+          # set the deployed URL also as log_url/target_url, as environment_url is not available as event context within lhci.yml
+          log_url: https://${{ steps.short-sha.outputs.sha }}.<%= host_preview %>/
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+      - uses: avakar/set-deployment-status@v1
+        if: failure()
+        with:
+          state: failure
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
 
   production:
     name: Deploy to production
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.event.deployment.environment == 'production'
     steps:
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: in_progress
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -105,3 +150,21 @@ jobs:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY_PRODUCTION }}
           DEPLOY_PATH: "<%= ssh_path_production %>"
           EMBER_API_HOST: "<%= api_host_production %>"
+
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: success
+          environment_url: https://<%= host_production %>/
+          # set the deployed URL also as log_url/target_url, as environment_url is not available as event context within lhci.yml
+          log_url: https://<%= host_production %>/
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+      - uses: avakar/set-deployment-status@v1
+        if: failure()
+        with:
+          state: failure
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
