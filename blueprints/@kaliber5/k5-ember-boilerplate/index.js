@@ -37,6 +37,8 @@ module.exports = {
         { name: 'ember-composable-helpers' },
         { name: 'ember-concurrency' },
         { name: 'ember-concurrency-decorators' },
+        { name: 'ember-concurrency-async' },
+        { name: 'ember-concurrency-ts' },
         { name: 'ember-concurrency-test-waiter' },
         { name: 'ember-css-modules', target: '~1.3.0-beta.1' },
         { name: 'ember-css-modules-sass' },
