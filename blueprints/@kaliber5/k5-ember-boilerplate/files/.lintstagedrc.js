@@ -9,8 +9,8 @@ module.exports = {
   '**/*.ts': () => 'yarn lint:ts',
 
   // Run ESLint, typescript-eslint and Prettier on staged files only
-  '**/*.{js,ts}': 'yarn lint:eslint --fix',
+  '**/*.{js,ts}': 'yarn lint:js:fix',
 
   // Template lint
-  '**/*.hbs': 'yarn ember-template-lint',
+  '**/*.hbs': 'yarn lint:hbs:fix',
 };

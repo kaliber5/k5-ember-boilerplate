@@ -12,6 +12,7 @@
 # /.env*
 /.pnp*
 /.sass-cache/
+/.eslintcache
 /*.lock
 /coverage/
 /*.log*
