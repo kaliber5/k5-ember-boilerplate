@@ -100,9 +100,9 @@ jobs:
       - uses: avakar/set-deployment-status@v1
         with:
           state: success
-          environment_url: https://${{ steps.short-sha.outputs.sha }}.<%= host_preview %>/
+          environment_url: https://${{ steps.short-sha.outputs.sha }}.<%= host_staging %>/
           # set the deployed URL also as log_url/target_url, as environment_url is not available as event context within lhci.yml
-          log_url: https://${{ steps.short-sha.outputs.sha }}.<%= host_preview %>/
+          log_url: https://${{ steps.short-sha.outputs.sha }}.<%= host_staging %>/
         env:
           # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
           GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
