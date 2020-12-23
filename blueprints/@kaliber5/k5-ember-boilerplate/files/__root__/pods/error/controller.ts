@@ -1,9 +1,9 @@
 import Controller from '@ember/controller';
-import { readOnly } from '@ember/object/computed';
 
 export default class Error_Controller extends Controller {
-  @readOnly('model')
-  error!: Error;
+  get error(): Error {
+    return this.model as Error;
+  }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
