@@ -119,16 +119,13 @@ module.exports = {
       yarn: '1.22.4',
     };
 
-    pkg.scripts['lint:hbs'] = 'ember-template-lint .';
     pkg.scripts['lint:ts'] = 'tsc --noEmit';
-    pkg.scripts['lint:eslint'] = 'eslint . --ext .js,.ts';
-    pkg.scripts['lint:js'] = 'yarn lint:ts && yarn lint:eslint';
-    pkg.scripts['lint'] = 'yarn lint:js && yarn lint:hbs';
     pkg.scripts['lint-staged'] = 'lint-staged';
-    pkg.scripts['start'] = 'ember serve';
-    pkg.scripts['test'] = 'ember test';
-    pkg.scripts['dev-prod'] = 'cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-prod.kaliber5.de';
-    pkg.scripts['dev-staging'] = 'cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-staging.kaliber5.d';
+
+    // re-enable when we have a way to set the correct API URLs here
+    // see https://github.com/kaliber5/k5-ember-boilerplate/issues/120
+    // pkg.scripts['dev-prod'] = 'cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-prod.kaliber5.de';
+    // pkg.scripts['dev-staging'] = 'cross-env DOTENV=dev-self ember s --proxy http://api.blutimes-staging.kaliber5.d';
 
     pkg.husky = {
       hooks: {
