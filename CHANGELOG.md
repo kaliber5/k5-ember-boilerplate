@@ -1,3 +1,20 @@
+## v0.5.2 (2021-02-10)
+
+#### :rocket: Enhancement
+* [#121](https://github.com/kaliber5/k5-ember-boilerplate/pull/121) Align package.json scripts to latest Ember CLI defaults ([@simonihmig](https://github.com/simonihmig))
+* [#112](https://github.com/kaliber5/k5-ember-boilerplate/pull/112) Add recommended ember-concurrency dependencies for TS ([@simonihmig](https://github.com/simonihmig))
+* [#108](https://github.com/kaliber5/k5-ember-boilerplate/pull/108) Use latest TypeScript ([@simonihmig](https://github.com/simonihmig))
+
+#### :bug: Bug Fix
+* [#129](https://github.com/kaliber5/k5-ember-boilerplate/pull/129) Fix FlashMessage styles ([@simonihmig](https://github.com/simonihmig))
+* [#134](https://github.com/kaliber5/k5-ember-boilerplate/pull/134) Fix native classes linting ([@simonihmig](https://github.com/simonihmig))
+* [#119](https://github.com/kaliber5/k5-ember-boilerplate/pull/119) Fix SSH deployment workflow template ([@simonihmig](https://github.com/simonihmig))
+* [#107](https://github.com/kaliber5/k5-ember-boilerplate/pull/107) Fix broken AWS lambda function ([@simonihmig](https://github.com/simonihmig))
+
+#### Committers: 2
+- Simon Ihmig ([@simonihmig](https://github.com/simonihmig))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v0.5.1 (2020-12-02)
 
 #### :rocket: Enhancement
