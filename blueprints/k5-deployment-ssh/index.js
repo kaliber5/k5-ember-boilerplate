@@ -22,7 +22,7 @@ module.exports = {
   },
 
   async _customizeDeploymentWorkflow(locals) {
-    const environments = ['production', 'staging'];
+    const environments = ['production', 'staging', 'preview'];
 
     for (const env of environments) {
       const answers = await this._queryDeployment(env);

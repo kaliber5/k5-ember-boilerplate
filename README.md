@@ -161,7 +161,7 @@ at hand:
 ##### Set up DNS
 
 If not done already, setup the DNS records for your production and staging domains. Also set up the wildcard subdomains
-(e.g. `*.staging.example.com`) for PR previews, as a `CNAME` record of your normal staging domain. 
+(e.g. `*.preview.example.com`) for PR previews, as a `CNAME` record of your normal staging domain. 
 
 
 
@@ -181,7 +181,7 @@ ssh-keygen -t rsa -b 4096 -m pem -f deploy_key        # generate SSH key
 ssh-copy-id -i ./deploy_key.pub user@your.server.com  # copy public key to server 
 ```
 
-
+Copy the public key to all server environments (production, staging).
 
 ##### Set up PR preview rewrite rules
 
@@ -199,7 +199,7 @@ Afterwards delete the file form your project.
 ##### Set up Github secrets
 
 Then copy the contents of the `deploy_key` file (your secret key) and use this to
-create the `DEPLOY_SSH_KEY_STAGING` and `DEPLOY_SSH_KEY_PRODUCTION` secrets in the Github repo.
+create the `DEPLOY_SSH_KEY` secrets in the Github repo.
 
 Afterwards delete both key files, as they allow anybody direct access to the server. From now on only Github Actions
 will be responsible for deployments. 

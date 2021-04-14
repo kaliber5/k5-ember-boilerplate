@@ -1,4 +1,4 @@
-name: CD
+name: Deployment
 
 on: deployment
 
@@ -34,7 +34,7 @@ jobs:
           DOTENV: staging-normal
           DEPLOY_HOST: "<%= ssh_host_staging %>"
           DEPLOY_USER: "<%= ssh_user_staging %>"
-          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY_STAGING }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_PATH: "<%= ssh_path_staging %>"
           EMBER_API_HOST: "<%= api_host_staging %>"
 
@@ -86,11 +86,11 @@ jobs:
         run: yarn deploy staging
         env:
           DOTENV: staging-normal
-          DEPLOY_HOST: "<%= ssh_host_staging %>"
-          DEPLOY_USER: "<%= ssh_user_staging %>"
-          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY_STAGING }}
-          DEPLOY_PATH: "<%= ssh_path_staging %>"
-          EMBER_API_HOST: "<%= api_host_staging %>"
+          DEPLOY_HOST: "<%= ssh_host_preview %>"
+          DEPLOY_USER: "<%= ssh_user_preview %>"
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_PATH: "<%= ssh_path_preview %>"
+          EMBER_API_HOST: "<%= api_host_preview %>"
 
       - uses: benjlevesque/short-sha@v1.0
         id: short-sha
@@ -100,9 +100,9 @@ jobs:
       - uses: avakar/set-deployment-status@v1
         with:
           state: success
-          environment_url: https://${{ steps.short-sha.outputs.sha }}.<%= host_staging %>/
+          environment_url: http://${{ steps.short-sha.outputs.sha }}.<%= host_preview %>/
           # set the deployed URL also as log_url/target_url, as environment_url is not available as event context within lhci.yml
-          log_url: https://${{ steps.short-sha.outputs.sha }}.<%= host_staging %>/
+          log_url: http://${{ steps.short-sha.outputs.sha }}.<%= host_preview %>/
         env:
           # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
           GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
@@ -147,7 +147,7 @@ jobs:
           DOTENV: prod-normal
           DEPLOY_HOST: "<%= ssh_host_production %>"
           DEPLOY_USER: "<%= ssh_user_production %>"
-          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY_PRODUCTION }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_PATH: "<%= ssh_path_production %>"
           EMBER_API_HOST: "<%= api_host_production %>"
 
