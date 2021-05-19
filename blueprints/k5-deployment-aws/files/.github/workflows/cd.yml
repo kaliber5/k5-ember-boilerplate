@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - develop
-    tags:
-      - 'v*'
   pull_request:
+  release:
+    types: [published]
 
 jobs:
   start_deployment:
@@ -14,18 +14,31 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot-preview[bot]'
     steps:
-      - uses: avakar/create-deployment@v1
+      - name: develop
+        uses: avakar/create-deployment@v1
         if: github.ref == 'refs/heads/develop'
         with:
           ref: ${{ github.ref }}
+          environment: develop
+          required_contexts: ''
+          auto_merge: false
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - name: staging
+        if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'release/')
+        uses: avakar/create-deployment@v1
+        with:
+          ref: ${{ github.head_ref }}
           environment: staging
           required_contexts: ''
           auto_merge: false
         env:
           # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
           GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-      - uses: avakar/create-deployment@v1
-        if: startsWith(github.ref, 'refs/pull/')
+      - name: preview
+        if: github.event_name == 'pull_request' && !startsWith(github.head_ref, 'release/')
+        uses: avakar/create-deployment@v1
         with:
           ref: ${{ github.head_ref }}
           environment: preview
@@ -34,8 +47,9 @@ jobs:
           transient_environment: true
         env:
           GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-      - uses: avakar/create-deployment@v1
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: production
+        if: github.event_name == 'release'
+        uses: avakar/create-deployment@v1
         with:
           ref: ${{ github.ref }}
           environment: production

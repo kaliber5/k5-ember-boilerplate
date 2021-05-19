@@ -3,6 +3,61 @@ name: Deployment
 on: deployment
 
 jobs:
+  develop:
+    name: Deploy to develop
+    runs-on: ubuntu-latest
+    if: github.event.deployment.environment == 'develop'
+    steps:
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: in_progress
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Add Github Package Registry Auth Token
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GPR_ACCESS_TOKEN }}" > ~/.npmrc
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Deploy to develop
+        run: yarn deploy develop --activate
+        env:
+          DOTENV: develop-normal
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-central-1
+          CFN_ENVIRONMENTNAME: develop
+          CFN_DOMAINNAME: "<%= host_develop %>"
+          CFN_CFCERTIFICATE: "<%= aws_cfcert_develop %>"
+          EMBER_API_HOST: "<%= api_host_develop %>"
+
+      - uses: avakar/set-deployment-status@v1
+        with:
+          state: success
+          environment_url: https://<%= host_develop %>/
+          # set the deployed URL also as log_url/target_url, as environment_url is not available as event context within lhci.yml
+          log_url: https://<%= host_develop %>/
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+      - uses: avakar/set-deployment-status@v1
+        if: failure()
+        with:
+          state: failure
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
   staging:
     name: Deploy to staging
     runs-on: ubuntu-latest

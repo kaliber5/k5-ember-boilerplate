@@ -1,0 +1,123 @@
+name: "Publish new release"
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+
+jobs:
+  release:
+    name: Publish new release
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/') # only merged release PRs trigger this job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from branch name
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#release/}
+
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Get release info
+        id: release_info
+        uses: kaliber5/action-get-release@v1
+        with:
+          token: ${{ github.token }}
+          tag_name: v${{ env.RELEASE_VERSION }}
+          draft: true
+
+      - name: Publish release
+        uses: kaliber5/action-update-release@v1
+        with:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          token: ${{ secrets.DEPLOY_TOKEN }}
+          id: ${{ steps.release_info.outputs.id }}
+          draft: false
+          target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: "GitFlow: Merge master -> develop"
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: master
+          target_branch: develop
+          github_token: ${{ github.token }}
+
+  hotfix:
+    name: Publish a hot fix
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && !startsWith(github.event.pull_request.head.ref, 'release/') # only merged hotfix PRs trigger this job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: git config
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      - name: Setup node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Add Github Package Registry Auth Token
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GPR_ACCESS_TOKEN }}" > ~/.npmrc
+
+      - name: Install dependencies
+# Somehow we get a 403 cache error using this action. Might be related to https://github.com/bahmutov/npm-install/issues/80
+#        uses: bahmutov/npm-install@v1
+        run: yarn
+
+      - name: Publish release
+        run: yarn run release-it --ci --config .release-hotfix.json
+        env:
+          # DEPLOY_TOKEN: We have to use a personal access token to trigger a new workflow, see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          GITHUB_AUTH: ${{ secrets.DEPLOY_TOKEN }}
+
+      - name: "GitFlow: Merge master -> develop"
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: master
+          target_branch: develop
+          github_token: ${{ github.token }}
+
+  delete-draft:
+    name: Cleanup draft release
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == false && startsWith(github.event.pull_request.head.ref, 'release/') # unmerged release PRs trigger this job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from branch name
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#release/}
+
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Get release info
+        id: release_info
+        uses: kaliber5/action-get-release@v1
+        with:
+          token: ${{ github.token }}
+          tag_name: v${{ env.RELEASE_VERSION }}
+          draft: true
+
+      - name: Delete draft release
+        uses: liudonghua123/delete-release-action@v1
+        with:
+          release_id: ${{ steps.release_info.outputs.id }}
