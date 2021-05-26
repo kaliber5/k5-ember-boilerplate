@@ -1,0 +1,22 @@
+{
+  "plugins": {
+    "release-it-lerna-changelog": {
+      "infile": "CHANGELOG.md",
+      "launchEditor": false
+    }
+  },
+  "git": {
+    "commitMessage": "Prepare v${version}",
+    "tag": false,
+    "tagName": "v${version}",
+    "requireUpstream": false
+  },
+  "github": {
+    "release": true,
+    "draft": true,
+    "tokenRef": "GITHUB_AUTH"
+  },
+  "npm": {
+    "publish": false
+  }
+}

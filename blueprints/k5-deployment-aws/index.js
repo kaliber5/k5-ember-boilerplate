@@ -104,6 +104,13 @@ module.exports = {
         { name: 'ember-cli-deploy-s3' },
       ],
     });
+
+    await this.addPackagesToProject(
+      [
+        { name: 'release-it' },
+        { name: 'release-it-lerna-changelog' },
+      ]
+    );
   },
 
   _modifyPackageJson() {
