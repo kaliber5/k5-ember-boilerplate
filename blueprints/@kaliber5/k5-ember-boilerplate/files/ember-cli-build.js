@@ -42,6 +42,11 @@ module.exports = function (defaults) {
               onlyMatchedOnce: false, // this is needed to inline all styles, and remove the error prone <style>
             },
           },
+          {
+            convertColors: {
+              currentColor: true, // convert colors to currentColor. Remove if not wanted, e.g. multicolor icons
+            },
+          },
         ],
       },
     },
