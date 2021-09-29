@@ -1,3 +1,20 @@
+
+## v0.5.3 (2021-09-29)
+
+#### :rocket: Enhancement
+* [#241](https://github.com/kaliber5/k5-ember-boilerplate/pull/241) Use `currentColor` setting by default for ember-svg-jar ([@simonihmig](https://github.com/simonihmig))
+* [#212](https://github.com/kaliber5/k5-ember-boilerplate/pull/212) Make en the default locale in testing ([@simonihmig](https://github.com/simonihmig))
+* [#211](https://github.com/kaliber5/k5-ember-boilerplate/pull/211) Update AWS deployment to new workflow ([@simonihmig](https://github.com/simonihmig))
+* [#174](https://github.com/kaliber5/k5-ember-boilerplate/pull/174) Update Lighthouse CI ([@simonihmig](https://github.com/simonihmig))
+
+#### :bug: Bug Fix
+* [#214](https://github.com/kaliber5/k5-ember-boilerplate/pull/214) Fix missing release-it config in AWS deployment ([@simonihmig](https://github.com/simonihmig))
+* [#180](https://github.com/kaliber5/k5-ember-boilerplate/pull/180) Fix SSH preview deployments ([@simonihmig](https://github.com/simonihmig))
+
+#### Committers: 2
+- Simon Ihmig ([@simonihmig](https://github.com/simonihmig))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v0.5.2 (2021-02-10)
 
 #### :rocket: Enhancement
