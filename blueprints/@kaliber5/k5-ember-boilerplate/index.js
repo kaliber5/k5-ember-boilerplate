@@ -22,6 +22,7 @@ module.exports = {
   async afterInstall(/* options */) {
     await this.addAddonsToProject({
       packages: [
+        { name: '@embroider/macros' },
         { name: 'ember-bootstrap' },
         { name: 'ember-cli-dotenv' },
         { name: 'ember-cli-favicon' },

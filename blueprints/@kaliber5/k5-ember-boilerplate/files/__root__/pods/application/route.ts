@@ -1,12 +1,17 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import Intl from 'ember-intl/services/intl';
+import { isTesting, macroCondition } from '@embroider/macros';
 
 export default class ApplicationRoute extends Route {
   @service intl!: Intl;
 
-  beforeModel(): void | Promise<unknown> {
-    this.intl.setLocale('de-de');
+  queryParams = {
+    locale: { refreshModel: true },
+  };
+
+  model({ locale = macroCondition(isTesting()) ? 'en-us' : 'de-de' }: { locale: string }): void {
+    this.intl.setLocale(locale);
   }
 
   afterModel(): void {
