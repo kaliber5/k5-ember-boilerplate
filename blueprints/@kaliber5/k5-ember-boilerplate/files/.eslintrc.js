@@ -7,13 +7,11 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'ember', 'prettier'],
+  plugins: ['@typescript-eslint', 'ember'],
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
     'standard',
-    'prettier/standard',
-    // This one should come last
     'plugin:prettier/recommended',
   ],
   env: {
@@ -38,7 +36,6 @@ module.exports = {
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
-        'prettier/@typescript-eslint',
       ],
       rules: {
         '@typescript-eslint/ban-ts-ignore': 'off', // Can't fully get rid of it due to TS quirks and issues with third-party depenecies
