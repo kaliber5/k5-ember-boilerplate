@@ -6,11 +6,11 @@ import Intl from 'ember-intl/services/intl';
 import translateError from '../t-error';
 import { run } from '@ember/runloop';
 
-function translateIfAvailable(intl: Intl, key: string): string | false {
+function translateIfAvailable(intl: Intl, key: string): string | undefined {
   try {
     return intl.lookup(key);
   } catch (e) {
-    return false;
+    return undefined;
   }
 }
 
@@ -31,10 +31,10 @@ export default function flashMessage(messageSuccess: string, messageError?: stri
 
       try {
         const result = (await orig.apply(this, args)) as unknown;
-        flashMessages.success(translateIfAvailable(intl, messageSuccess) || messageSuccess);
+        flashMessages.success(translateIfAvailable(intl, messageSuccess) ?? messageSuccess);
         return result;
       } catch (e) {
-        const m = (messageError && translateIfAvailable(intl, messageError)) || translateError(intl, e);
+        const m = (messageError && translateIfAvailable(intl, messageError)) ?? translateError(intl, e);
         if (m) {
           flashMessages.danger(m);
         }
@@ -44,7 +44,7 @@ export default function flashMessage(messageSuccess: string, messageError?: stri
   };
 }
 
-export function errorMessage(messageError?: string): MethodDecorator {
+export function errorMessage(messageError?: string, rethrow = true): MethodDecorator {
   return function (_target: unknown, _propertyKey: string, desc: PropertyDescriptor): void {
     assert('flashMessage decorator can only be applied to methods.', typeof desc.value === 'function');
 
@@ -63,15 +63,17 @@ export function errorMessage(messageError?: string): MethodDecorator {
         return (await orig.apply(this, args)) as unknown;
       } catch (e) {
         const m =
-          (messageError && translateIfAvailable(intl, messageError)) ||
-          translateError(intl, e) ||
+          (messageError && translateIfAvailable(intl, messageError)) ??
+          translateError(intl, e) ??
           intl.t('errors.generic');
 
         flashMessages.danger(m);
 
-        run(() => {
-          throw e;
-        });
+        if (rethrow) {
+          run(() => {
+            throw e;
+          });
+        }
 
         return undefined;
       }
