@@ -5,6 +5,10 @@ const fingerprintExtensions = require('broccoli-asset-rev/lib/default-options').
 
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
+    'ember-fetch': {
+      preferNative: true,
+    },
+
     'ember-bootstrap': {
       bootstrapVersion: 4,
       importBootstrapFont: false,
