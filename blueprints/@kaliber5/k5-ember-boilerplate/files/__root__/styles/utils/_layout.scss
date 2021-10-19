@@ -30,6 +30,6 @@
   }
 
   &:hover #{$child-selector} {
-    transform: scale(1.2);
+    transform: scale($ratio);
   }
 }
