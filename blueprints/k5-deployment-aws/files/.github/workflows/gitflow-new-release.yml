@@ -41,12 +41,12 @@ jobs:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request
-        uses: thomaseizinger/create-pull-request@1.0.0
+        uses: thomaseizinger/create-pull-request@1.2.2
         with:
           head: release/${{ github.event.inputs.version }}
           base: master
           title: Release version ${{ github.event.inputs.version }}
-#          reviewers: ${{ github.actor }}
+          labels: release
           body: |
             Hi @${{ github.actor }}!
 
